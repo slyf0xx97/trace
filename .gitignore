@@ -6,3 +6,8 @@ dl/
 figup/
 figup*.cmd
 .playwright-mcp/
+# working files: never deployed, kept out of git
+raw/
+full/raw/
+shots/
+backup-*/

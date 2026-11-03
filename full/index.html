@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script>/* clear old saved copies once per version so updates always show */
-(function(){var V='20261103a';try{if(localStorage.getItem('trace-ver')!==V){localStorage.setItem('trace-ver',V);var done=function(){location.reload();};
+(function(){var V='20261103b';try{if(localStorage.getItem('trace-ver')!==V){localStorage.setItem('trace-ver',V);var done=function(){location.reload();};
 var p=('caches' in window)?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));}):Promise.resolve();
 p.then(function(){return navigator.serviceWorker?navigator.serviceWorker.getRegistrations():[];}).then(function(rs){return Promise.all((rs||[]).map(function(r){return r.update().catch(function(){});}));}).then(done,done);}}catch(e){}})();
 </script>
@@ -122,7 +122,7 @@ html.framed #status{display:flex;position:absolute;left:0;right:0;top:0;height:5
 #status .ic{display:flex;gap:6px;align-items:center}
 html.framed #homebar{display:block;position:absolute;left:50%;bottom:7px;width:136px;height:5px;margin-left:-68px;border-radius:3px;background:#152331;opacity:.85;z-index:35;pointer-events:none}
 </style>
-<link rel="stylesheet" href="native.css?v=20261103a">
+<link rel="stylesheet" href="native.css?v=20261103b">
 </head>
 <body>
 <div id="stage">
@@ -152,9 +152,9 @@ html.framed #homebar{display:block;position:absolute;left:50%;bottom:7px;width:1
 <div id="homebar" aria-hidden="true"></div>
 </div></div>
 </div>
-<script src="data.js?v=20261103a"></script>
-<script src="native.js?v=20261103a"></script>
-<script src="player.js?v=20261103a"></script>
-<script src="appmode.js?v=20261103a"></script>
+<script src="data.js?v=20261103b"></script>
+<script src="native.js?v=20261103b"></script>
+<script src="player.js?v=20261103b"></script>
+<script src="appmode.js?v=20261103b"></script>
 </body>
 </html>
