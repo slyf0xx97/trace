@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- ===== MAZE SNIPPET: paste the Maze tracking code on the line below (right after <head>) ===== -->
+
+<!-- ===== END MAZE SNIPPET ===== -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trace</title>
+<meta name="theme-color" content="#eef4f9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trace">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/mark_lg.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#eef4f9; --ink:#152331; --slate:#3f5570; --slate-soft:#e6eef6;
+  --blue:#3a6ea5; --blue-ink:#2b5a87; --blue-soft:#e4eef8; --muted:#52606f;
+  --faint:#8a96a3; --line:#dbe5f0; --track:#e3eaf1; --z:1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ground);-webkit-text-size-adjust:100%}
+body{font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+@media (min-width:600px){html,body{background:#d9e3ed}}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+img{display:block}
+#app{width:402px;margin:0 auto;zoom:var(--z);background:var(--ground);min-height:calc(100vh / var(--z));position:relative;overflow-x:hidden}
+.screen{display:none;position:relative;width:402px}
+.screen.on{display:block}
+
+/* ---------- header pills ---------- */
+.hdr{position:absolute;left:20px;top:52px;display:flex;align-items:center;justify-content:space-between;z-index:5}
+.hdr.sm{width:274px;height:30.3px}
+.hdr.lg{width:362px;height:40px}
+.pill{display:flex;align-items:center;background:rgba(255,255,255,.88);border-radius:999px;box-shadow:0 3px 9px rgba(21,35,49,.12);white-space:nowrap;font-weight:600}
+.sm .logo{height:30.3px;gap:6px;padding:0 10.6px 0 7.6px}
+.sm .logo img{width:19.7px;height:16.7px}
+.sm .logo span{font-family:Outfit;font-weight:700;font-size:13.6px}
+.sm .back{height:30.3px;gap:4.5px;padding:0 10.6px 0 7.6px;font-size:10.6px}
+.sm .back img{width:13.6px;height:13.6px}
+.sm .where{padding:6px 9px;font-size:9.8px;box-shadow:none}
+.lg .logo{height:40px;gap:8px;padding:0 14px 0 10px;box-shadow:0 4px 12px rgba(21,35,49,.12)}
+.lg .logo img{width:26px;height:22px}
+.lg .logo span{font-family:Outfit;font-weight:700;font-size:18px}
+.lg .back{height:40px;gap:6px;padding:0 14px 0 10px;font-size:14px;box-shadow:0 4px 12px rgba(21,35,49,.12)}
+.lg .back img{width:18px;height:18px}
+.lg .where{padding:8px 12px;font-size:13px;box-shadow:none}
+
+/* ---------- invisible hotspots on image screens ---------- */
+.hot{position:absolute;z-index:4;border-radius:12px}
+.hot:active{background:rgba(21,35,49,.06)}
+.debug .hot{outline:2px dashed #d23e1b;background:rgba(210,62,27,.08)}
+
+/* ---------- bottom nav ---------- */
+#navwrap{position:fixed;left:0;right:0;bottom:0;z-index:20;pointer-events:none}
+#nav{width:402px;margin:0 auto;zoom:var(--z);height:75px;position:relative}
+.nav{position:absolute;left:0;right:0;bottom:0;height:75px;background:#fff;border-top:1px solid #e3e9ef;border-radius:28px 28px 0 0;display:flex;align-items:flex-start;padding:0 8px 18px;pointer-events:auto}
+.tab{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0 6px;border-radius:14px;color:var(--muted);font-size:11px;font-weight:500}
+.tab img{width:22px;height:22px}
+.tab.on{background:var(--blue-soft);color:var(--blue-ink);font-weight:600}
+
+/* ---------- discover header (pixel art + controls from Figma) ---------- */
+.dhead{position:absolute;left:0;top:0;width:402px;height:312px;background:url(assets/discover-end.jpg) top left/402px auto no-repeat}
+
+/* ---------- session card (list A + deck B share it) ---------- */
+.card{position:absolute;background:#fff;border-radius:20px;overflow:hidden;width:362px}
+.card .ph{position:absolute;left:0;top:0;width:362px;overflow:hidden}
+.card .ph img{position:absolute;width:100%;height:100%;object-fit:cover}
+.card .ph img.crop{width:161.29%;height:161.29%;left:-48.39%;top:-40.32%;object-fit:cover}
+.card .shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 45%,rgba(10,18,26,.75))}
+.card .ttl{position:absolute;left:16px;font-family:Outfit;font-weight:600;font-size:22px;color:#fff;white-space:nowrap}
+.badge{position:absolute;left:225px;top:8px;display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:5px 12px 5px 6px;line-height:1.15}
+.badge .lg0{width:22px;height:22px;border:.55px solid #e3e9ef;border-radius:12px;background:#fff;position:relative}
+.badge .lg0 img{position:absolute;left:1.65px;top:1.65px;width:17.6px;height:17.6px;object-fit:contain;border-radius:8px}
+.badge b{display:block;font-size:11px;color:var(--ink)}
+.badge i{display:block;font-style:normal;font-size:10px;color:var(--muted)}
+.count{position:absolute;left:9px;top:9px;background:#fff;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+.card .prov{position:absolute;left:16px;display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.card .prov img{width:14px;height:14px}
+.card .time{position:absolute;left:16px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;white-space:nowrap}
+.dur{background:var(--blue-soft);color:var(--blue-ink);font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.price{position:absolute;right:16px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.price s{font-size:12px;color:var(--faint)}
+.price b{font-size:13px;color:var(--blue-ink)}
+.price b.plain{font-size:15px;color:var(--ink)}
+.trk{position:absolute;left:16px;width:140px;height:6px;border-radius:3px;background:var(--track)}
+.trk span{position:absolute;top:0;height:6px;border-radius:3px;background:var(--blue)}
+.tl{position:absolute;font-size:10px;color:var(--faint)}
+.tags{position:absolute;left:16px;display:flex;gap:6px}
+.tags span{background:var(--slate-soft);color:var(--slate);font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px}
+
+/* list A geometry */
+.listA .card{left:20px;height:264px}
+.listA .ph{height:138px}.listA .ttl{top:98px}.listA .prov{top:148px}
+.listA .time{top:168px}.listA .price{top:169px}.listA .trk{top:200px}
+.listA .tl{top:208px}.listA .tags{top:230px}
+.listA button.card{display:block;transition:transform .12s ease}
+.listA button.card:active{transform:scale(.985)}
+
+/* deck B geometry */
+.deck .card{height:400px;border:1px solid #d9e3ed;box-shadow:-2px 3px 6px rgba(15,26,41,.18);touch-action:none;user-select:none;-webkit-user-select:none;
+  transition:left .28s ease,top .28s ease,width .28s ease,opacity .28s ease,transform .28s ease}
+.deck .card.drag{transition:none}
+.deck .card .in{position:absolute;left:-1px;top:-1px;width:362px;height:400px}
+.deck .ph{height:260px}.deck .ttl{top:219px}.deck .prov{top:269px}
+.deck .time{top:289px}.deck .price{top:290px}.deck .trk{top:321px}
+.deck .tl{top:329px}.deck .tags{top:351px}
+.deck .badge{left:224px;top:7px}
+.cue{position:absolute;left:0;top:762px;width:402px;height:34px;background:var(--ground)}
+.cue button{position:absolute;top:6px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:#6b7380}
+.cue img{width:30px;height:22px}
+
+/* ---------- session detail (HTML version) ---------- */
+.sx{padding:108px 20px 110px;display:flex;flex-direction:column;gap:14px}
+.kick{font-weight:700;font-size:11px;line-height:14px;letter-spacing:1.4px;text-transform:uppercase;color:var(--slate)}
+.sx h1{font-family:Outfit;font-weight:600;font-size:28px;line-height:34px;letter-spacing:-.5px;margin-top:4px}
+.box{background:#fff;border-radius:20px;overflow:hidden}
+.box .photo{height:150px;position:relative;overflow:hidden}
+.box .photo img{width:100%;height:100%;object-fit:cover}
+.row{display:flex;gap:14px;align-items:center;padding:14px 16px}
+.row+.row{border-top:1px solid var(--line)}
+.ib{width:36px;height:36px;border-radius:10px;background:var(--slate-soft);display:flex;align-items:center;justify-content:center;flex:none}
+.ib img{width:20px;height:20px}
+.strong{font-weight:600;font-size:15px;line-height:22px}
+.small{font-size:14px;line-height:20px;color:var(--slate)}
+.box .kick{padding:14px 16px 4px}
+.org{padding:14px 16px}
+.pricebox{background:var(--blue-soft);border-radius:20px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.pricebox .small{color:var(--blue-ink);margin-top:2px}
+.big{font-family:Outfit;font-weight:600;font-size:28px;line-height:34px;letter-spacing:-.5px}
+.cta{display:block;width:100%;background:var(--blue);color:#fff;border-radius:16px;padding:16px;text-align:center;font-family:Outfit;font-weight:600;font-size:16px;line-height:20px;transition:transform .1s,filter .1s}
+.cta:active{transform:scale(.985);filter:brightness(.93)}
+
+/* ---------- version chooser ---------- */
+.choose{padding:120px 24px;text-align:center}
+.choose h1{font-family:Outfit;font-size:28px;margin:16px 0 6px}
+.choose p{color:var(--slate);font-size:14px;margin-bottom:28px}
+.choose a{display:block;background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;text-decoration:none;color:var(--ink);font-weight:700;box-shadow:0 3px 9px rgba(21,35,49,.08)}
+.choose a small{display:block;font-weight:400;color:var(--muted);margin-top:4px}
+
+#toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);background:var(--ink);color:#fff;font-size:13px;padding:10px 16px;border-radius:12px;opacity:0;transition:.2s;z-index:30;pointer-events:none;max-width:86vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ================= DESKTOP: phone frame + control bar ================= */
+#bar,#status,#homebar{display:none}
+html.framed,html.framed body{background:radial-gradient(1200px 700px at 50% -10%,#24384d 0%,#111b26 55%,#0b121a 100%) fixed;min-height:100vh}
+html.framed #stage{display:flex;flex-direction:column;align-items:center;gap:18px;padding:16px 16px 28px}
+html.framed #bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;font-family:"DM Sans";color:#e8eef5}
+.grp{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:6px}
+.brand{gap:10px;padding:6px 14px 6px 8px}
+.brand .mk{width:34px;height:34px;border-radius:10px;background:#eef4f9;display:flex;align-items:center;justify-content:center}
+.brand .mk img{width:22px;height:19px}
+.brand b{font-family:Outfit;font-size:16px;font-weight:700;color:#fff}
+.brand .tag{font-size:11px;font-weight:700;color:#ffd9cf;background:rgba(210,62,27,.28);border:1px solid rgba(210,62,27,.55);border-radius:999px;padding:2px 8px;margin-left:6px}
+.brand small{display:block;font-size:11.5px;color:#9fb0c2;margin-top:1px}
+.lbl{font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#8095aa;padding:0 6px 0 8px}
+.bb{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#d7e1ec;padding:7px 12px;border-radius:11px;white-space:nowrap}
+.bb:hover{background:rgba(255,255,255,.07)}
+.bb.on{background:#eef4f9;color:#152331}
+.bb.go{background:#3a6ea5;color:#fff}
+.bb svg{width:15px;height:15px}
+html.framed #phone{zoom:var(--fit);width:426px;height:898px;padding:12px;border-radius:66px;background:linear-gradient(145deg,#3a4250,#15191f 40%,#2a3039);box-shadow:0 0 0 2px #0a0d11,0 30px 80px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.08)}
+html.framed #screen{position:relative;width:402px;height:874px;border-radius:54px;overflow:hidden;background:var(--ground);isolation:isolate}
+html.framed #scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overscroll-behavior:contain}
+html.framed #scroller::-webkit-scrollbar{display:none}
+html.framed #app{min-height:874px}
+html.framed #navwrap{position:absolute}
+html.framed #toast{position:absolute}
+html.framed #status{display:flex;position:absolute;left:0;right:0;top:0;height:50px;z-index:25;align-items:center;justify-content:space-between;padding:4px 34px 0 40px;font-family:"DM Sans";font-weight:700;font-size:15px;color:#152331;pointer-events:none}
+#status .isl{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;background:#000;border-radius:20px}
+#status .ic{display:flex;gap:6px;align-items:center}
+html.framed #homebar{display:block;position:absolute;left:50%;bottom:7px;width:136px;height:5px;margin-left:-68px;border-radius:3px;background:#152331;opacity:.85;z-index:25;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="stage">
+<header id="bar" aria-label="Prototype controls">
+  <div class="grp brand"><div class="mk"><img src="assets/mark_lg.svg" alt=""></div>
+    <div><b>Trace</b><span class="tag">Ghernie</span><small>Find a hobby session that fits your free time</small></div></div>
+  <div class="grp"><span class="lbl">Version</span>
+    <button class="bb" data-ver="a">A · List</button><button class="bb" data-ver="b">B · Swipe deck</button></div>
+  <div class="grp">
+    <button class="bb" id="bFit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Fit screen</button>
+    <button class="bb" id="bHot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3" stroke-dasharray="3 3"/></svg>Hotspots</button>
+    <button class="bb go" id="bReset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.6M4 4v4.6h4.6"/></svg>Reset</button>
+    <a class="bb" href="full/" style="text-decoration:none">Full app</a></div>
+</header>
+<div id="phone"><div id="screen">
+<div id="status" aria-hidden="true"><span>9:41</span><span class="isl"></span>
+  <span class="ic"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#152331"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#152331"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#152331"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#152331"/></svg>
+  <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.3-2.7a3.3 3.3 0 0 0-4.6 0zM3.4 6.1a6.8 6.8 0 0 1 9.2 0l1.5-1.8a9.2 9.2 0 0 0-12.2 0zM.4 2.6a11 11 0 0 1 15.2 0L16 2.1A12 12 0 0 0 0 2.1z" fill="#152331"/></svg>
+  <svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#152331" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.6" fill="#152331"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#152331" opacity=".45"/></svg></span></div>
+<div id="scroller">
+<div id="app">
+
+  <!-- Version chooser (no ?v= in the URL) -->
+  <section class="screen" data-s="choose">
+    <div class="choose">
+      <img src="assets/mark_lg.svg" alt="" style="width:52px;height:44px;margin:0 auto">
+      <h1>Trace prototype</h1>
+      <p>Pick a version. Each Maze study should use its own link.</p>
+      <a href="?v=a&amp;s=home">Version A: Discover list<small>?v=a</small></a>
+      <a href="?v=b&amp;s=home">Version B: Swipe deck<small>?v=b</small></a>
+    </div>
+  </section>
+
+  <!-- Home (A and B share it) -->
+  <section class="screen" data-s="home">
+    <img src="assets/home.jpg" width="402" height="1123" alt="Home: Hey Sarah, your Saturday afternoon is open. Credits, this weekend's schedule, XP and Rewards.">
+    <div class="hdr lg"><div class="pill logo"><img src="assets/mark_lg.svg" alt=""><span>trace</span></div></div>
+    <div style="height:40px"></div>
+  </section>
+
+  <!-- Discover A: list -->
+  <section class="screen listA" data-s="discover-a" style="height:1497px">
+    <div class="dhead" role="img" aria-label="Discover. Search Saturday activities. Filters 2. For you. Sat 20 Sep, 2 to 5pm free."></div>
+    <div class="hdr lg"><div class="pill logo"><img src="assets/mark_lg.svg" alt=""><span>trace</span></div></div>
+    <div id="listA"></div>
+  </section>
+
+  <!-- Discover B: swipe deck -->
+  <section class="screen" data-s="discover-b" style="height:874px">
+    <div class="dhead" role="img" aria-label="Discover. Search Saturday activities. Filters 2. For you. Sat 20 Sep, 2 to 5pm free."></div>
+    <div class="hdr lg"><div class="pill logo"><img src="assets/mark_lg.svg" alt=""><span>trace</span></div></div>
+    <div class="deck" id="deck"></div>
+    <div class="cue">
+      <button style="left:20px" data-act="skip"><img src="assets/swipe_left.svg" alt="">Swipe left to next activity</button>
+      <button style="left:208px" data-act="view">Swipe right for more info<img src="assets/swipe_right.svg" alt=""></button>
+    </div>
+  </section>
+
+  <!-- Discover B: end of deck -->
+  <section class="screen" data-s="discover-end" style="height:874px">
+    <img src="assets/discover-end.jpg" width="402" height="874" alt="That's everything for today. You've seen all 4 sessions that fit Sat 2 to 5pm.">
+    <div class="hdr lg"><div class="pill logo"><img src="assets/mark_lg.svg" alt=""><span>trace</span></div></div>
+    <button class="hot" style="left:20px;top:523px;width:362px;height:48px" data-act="restart" aria-label="Start again"></button>
+  </section>
+
+  <!-- S05 Session A: Beginner Digital Art (the best match) -->
+  <section class="screen" data-s="session-art">
+    <img src="assets/session-a.jpg" width="402" height="1036" alt="Beginner Digital Art by ArtHaus Studio. Sat 20 Sep, 2pm to 5pm. 30 dollars, 0 with Culture Pass credit.">
+    <div class="hdr lg"><div class="pill back"><img src="assets/back_lg.svg" alt="">Back to Discover</div><div class="pill where">Trace Start</div></div>
+    <button class="hot" style="left:20px;top:52px;width:161px;height:40px" data-act="back" aria-label="Back to Discover"></button>
+    <button class="hot" style="left:20px;top:888px;width:306px;height:54px" data-go="review" aria-label="Review booking, Sat 2:00 to 5:00pm"></button>
+  </section>
+
+  <!-- S05x sessions (built in HTML) -->
+  <section class="screen" data-s="session-watercolour"></section>
+  <section class="screen" data-s="session-acrylic"></section>
+  <section class="screen" data-s="session-pottery"></section>
+
+  <!-- S05R Review booking (goal) -->
+  <section class="screen" data-s="review">
+    <img src="assets/review.jpg" width="402" height="953" alt="Step 2 of 4. Review your booking: Beginner digital-art workshop, ArtHaus Studio, Sat 20 Sep 2 to 5pm, 30 dollars.">
+    <div class="hdr lg"><div class="pill back"><img src="assets/back_lg.svg" alt="">Back to details</div><div class="pill where">Booking</div></div>
+    <button class="hot" style="left:20px;top:52px;width:362px;height:40px" data-act="back" aria-label="Back to details"></button>
+    <div style="height:30px"></div>
+  </section>
+
+  <!-- S05xR Review booking for the three wrong picks (not the goal) -->
+  <section class="screen" data-s="review-watercolour">
+    <img src="assets/review-watercolour.jpg" width="402" height="953" alt="Step 2 of 4. Review your booking: Watercolour for beginners, The Paint Room.">
+    <div class="hdr lg"><div class="pill back"><img src="assets/back_lg.svg" alt="">Back to details</div><div class="pill where">Booking</div></div>
+    <button class="hot" style="left:20px;top:52px;width:362px;height:40px" data-act="back" aria-label="Back to details"></button>
+    <div style="height:30px"></div>
+  </section>
+  <section class="screen" data-s="review-acrylic">
+    <img src="assets/review-acrylic.jpg" width="402" height="953" alt="Step 2 of 4. Review your booking: Acrylic painting taster, Canvas Collective.">
+    <div class="hdr lg"><div class="pill back"><img src="assets/back_lg.svg" alt="">Back to details</div><div class="pill where">Booking</div></div>
+    <button class="hot" style="left:20px;top:52px;width:362px;height:40px" data-act="back" aria-label="Back to details"></button>
+    <div style="height:30px"></div>
+  </section>
+  <section class="screen" data-s="review-pottery">
+    <img src="assets/review-pottery.jpg" width="402" height="953" alt="Step 2 of 4. Review your booking: Wheel-throwing taster, Clay Collective.">
+    <div class="hdr lg"><div class="pill back"><img src="assets/back_lg.svg" alt="">Back to details</div><div class="pill where">Booking</div></div>
+    <button class="hot" style="left:20px;top:52px;width:362px;height:40px" data-act="back" aria-label="Back to details"></button>
+    <div style="height:30px"></div>
+  </section>
+</div>
+</div><!-- /scroller -->
+
+<div id="navwrap"><div id="nav"><nav class="nav" aria-label="Main">
+  <button class="tab" data-go="home"><img src="assets/n_home.svg" alt="">Home</button>
+  <button class="tab" data-tab="progress"><img src="assets/n_prog.svg" alt="">Progress</button>
+  <button class="tab" data-go="discover"><img src="assets/n_disc_on.svg" alt="">Discover</button>
+  <button class="tab" data-tab="network"><img src="assets/n_net.svg" alt="">Network</button>
+</nav></div></div>
+<div id="toast" role="status"></div>
+<div id="homebar" aria-hidden="true"></div>
+</div></div><!-- /screen /phone -->
+</div><!-- /stage -->
+<script>
+/* ================= DATA (from Figma page "A/B test (Maze)", updated 24 Oct) =================
+   Wrong picks (Watercolour, Acrylic, Wheel-throwing) open their own Review booking screen,
+   s=review-<id>. Only Beginner Digital Art reaches the goal screen, s=review.              */
+const SESSIONS = {
+  watercolour: { title:'Watercolour for beginners', org:'The Paint Room', photo:'assets/photo_watercolour.jpg', crop:false,
+    time:'Sat 2:30 to 4:30pm', dur:'2 h', was:'$32', bar:[23.33,93.33], badge:true, tags:['Painting','Beginner'],
+    when:'Sat 20 Sep, 2:30pm to 4:30pm', whenSub:'2 hours, ends 4:30pm', walk:'12 min walk from you',
+    inc:[['Paints and paper provided','Everything you need for the session'],['Washes, blends and layers','Finish a small landscape by the end'],['One-off drop-in','No membership or course']],
+    tg:'@thepaintroom_sg', priceNote:'$2 after Culture Pass credit', price:'$32', cta:'Review booking, Sat 2:30 to 4:30pm' },
+  acrylic: { title:'Acrylic painting taster', org:'Canvas Collective', photo:'assets/photo_acrylic.jpg', crop:false,
+    time:'Sat 2:00 to 3:30pm', dur:'1.5 h', plain:'$28', bar:[0,70], badge:false, tags:['Painting','All levels'],
+    when:'Sat 20 Sep, 2:00pm to 3:30pm', whenSub:'1.5 hours, ends 3:30pm', walk:'10 min walk from you',
+    inc:[['Canvas, brushes and paints','Provided for the session'],['Artist-led basics','Colour mixing and brush strokes'],['All levels welcome','No experience needed']],
+    tg:'@canvascollective_sg', priceNote:'Pay at the studio', price:'$28', cta:'Review booking, Sat 2:00 to 3:30pm' },
+  pottery: { title:'Wheel-throwing taster', org:'Clay Collective', photo:'assets/photo_pottery.jpg', crop:false,
+    time:'Sat 3:00 to 5:00pm', dur:'2 h', was:'$35', bar:[46.67,93.33], badge:true, tags:['Pottery','Beginner'],
+    when:'Sat 20 Sep, 3:00pm to 5:00pm', whenSub:'2 hours, ends 5:00pm', walk:'15 min walk from you',
+    inc:[['Clay and tools','Everything you need at the wheel'],['Firing included','Collect your bowl in two weeks'],['Beginner friendly','No experience needed']],
+    tg:'@claycollective_sg', priceNote:'$5 after Culture Pass credit', price:'$35', cta:'Review booking, Sat 3:00 to 5:00pm' },
+  art: { title:'Beginner Digital Art', org:'ArtHaus Studio', photo:'assets/photo_tablet.jpg', crop:false,
+    time:'Sat 2:00 to 5:00pm', dur:'3 h', was:'$30', bar:[0,140], badge:true, tags:['Digital art','Beginner'] }
+};
+const ORDER = ['watercolour','acrylic','pottery','art'];   // same order in A and B
+const WRONG = ['watercolour','acrylic','pottery'];
+
+/* ================= HELPERS ================= */
+const $ = (q,el=document)=>el.querySelector(q);
+const $$ = (q,el=document)=>[...el.querySelectorAll(q)];
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function cardInner(id, k, showCount){
+  const d = SESSIONS[id];
+  return `<div class="ph"><img src="${d.photo}" alt="" class="${d.crop?'crop':''}" draggable="false"><div class="shade"></div></div>
+    <p class="ttl">${esc(d.title)}</p>
+    ${d.badge?`<div class="badge"><div class="lg0"><img src="assets/logo_culturepass.png" alt=""></div><div><b>Culture Pass</b><i>eligible</i></div></div>`:''}
+    ${showCount?`<div class="count">${k} of 4</div>`:''}
+    <div class="prov"><img src="assets/pin_sm.svg" alt="">${esc(d.org)}</div>
+    <div class="time">${esc(d.time)}<span class="dur">${d.dur}</span></div>
+    <div class="price">${d.was?`<s>${d.was}</s><b>$0 with credits</b>`:`<b class="plain">${d.plain}</b>`}</div>
+    <div class="trk"><span style="left:${d.bar[0]}px;width:${d.bar[1]}px"></span></div>
+    <span class="tl" style="left:16px">2pm</span><span class="tl" style="left:134px">5pm</span>
+    <div class="tags">${d.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div>`;
+}
+
+function buildListA(){
+  $('#listA').innerHTML = ORDER.map((id,i)=>
+    `<button class="card" style="top:${318+i*274}px" data-go="session-${id}" aria-label="${esc(SESSIONS[id].title)}">${cardInner(id,i+1,false)}</button>`).join('');
+}
+
+function buildDeck(){
+  $('#deck').innerHTML = ORDER.map((id,i)=>
+    `<div class="card" data-i="${i}" data-id="${id}"><div class="in">${cardInner(id,i+1,true)}</div></div>`).join('');
+}
+
+function buildSession(id){
+  const d = SESSIONS[id];
+  const row = (icon,a,b)=>`<div class="row"><div class="ib"><img src="assets/${icon}" alt=""></div><div><p class="strong">${esc(a)}</p><p class="small">${esc(b)}</p></div></div>`;
+  $(`[data-s="session-${id}"]`).innerHTML = `
+    <div class="hdr lg"><button class="pill back" data-act="back"><img src="assets/back_lg.svg" alt="">Back to Discover</button><div class="pill where">Trace Start</div></div>
+    <div class="sx">
+      <div><p class="kick">${esc(d.org)}</p><h1>${esc(d.title)}</h1></div>
+      <div class="box">
+        <div class="photo"><img src="${d.photo}" alt=""></div>
+        ${row('i_clock.svg',d.when,d.whenSub)}${row('i_pin.svg',d.org,d.walk)}
+      </div>
+      <div class="box"><p class="kick">What's included</p>${d.inc.map(r=>row('i_check.svg',r[0],r[1])).join('')}</div>
+      <div class="box org"><p class="strong">Run by ${esc(d.org)}</p><p class="small">Telegram ${esc(d.tg)}</p></div>
+      <div class="pricebox"><div><p class="kick">Price</p><p class="small">${esc(d.priceNote)}</p></div><p class="big">${d.price}</p></div>
+      <button class="cta" data-go="review-${id}">${esc(d.cta)}</button>
+    </div>`;
+}
+</script>
+<script>
+/* ================= ROUTER =================
+   Every screen has its own URL so Maze can track paths and the goal:
+   ?v=a&s=home | ?v=a&s=discover | ?v=b&s=discover&card=1..4 | ?v=b&s=discover-end
+   ?v=a&s=session-art (best match) | session-watercolour | session-acrylic | session-pottery
+   ?v=a&s=review-watercolour | review-acrylic | review-pottery  <- wrong-pick review screens
+   ?v=a&s=review  <- GOAL screen (Review booking)                                   */
+const st = { v:null, s:'home', card:1 };
+const scrollMem = {};
+let hotOn = false, fitOn = true;
+const framed = ()=>document.documentElement.classList.contains('framed');
+const getY = ()=> framed() ? $('#scroller').scrollTop : scrollY;
+const setY = y=>{ if (framed()) $('#scroller').scrollTop = y; else scrollTo(0, y); };
+
+function readURL(){
+  const p = new URLSearchParams(location.search);
+  st.v = (p.get('v')||'').toLowerCase()==='b' ? 'b' : ((p.get('v')||'').toLowerCase()==='a' ? 'a' : null);
+  st.s = p.get('s') || 'home';
+  st.card = Math.min(4, Math.max(1, parseInt(p.get('card')||'1',10) || 1));
+  document.documentElement.classList.toggle('debug', p.get('debug')==='1' || hotOn);
+}
+function urlFor(s, card){
+  const p = new URLSearchParams({ v: st.v, s });
+  if (st.v==='b' && s==='discover') p.set('card', card||1);
+  const dbg = new URLSearchParams(location.search).get('debug'); if (dbg) p.set('debug', dbg);
+  return '?' + p.toString();
+}
+function go(s, opt={}){
+  scrollMem[location.search] = getY();
+  if (s==='discover' && st.v==='b' && (opt.card||1) > 4) s = 'discover-end';
+  const depth = ((history.state && history.state.d) || 0) + (opt.replace?0:1);
+  const url = urlFor(s, opt.card);
+  history[opt.replace?'replaceState':'pushState']({ d: depth }, '', url);
+  readURL(); render(); setY(0);
+}
+function back(){
+  if (history.state && history.state.d > 0) { history.back(); return; }
+  const parent = st.s==='review' ? 'session-art' : st.s.startsWith('review-') ? 'session-' + st.s.slice(7) : 'discover';
+  go(parent, { replace:true, card: st.card });
+}
+addEventListener('popstate', ()=>{ readURL(); render(); setY(scrollMem[location.search]||0); });
+
+function screenName(){
+  if (!st.v) return 'choose';
+  if (st.s==='discover') return st.v==='b' ? 'discover-b' : 'discover-a';
+  if (st.s==='discover-end') return st.v==='b' ? 'discover-end' : 'discover-a';
+  if (/^session-(art|watercolour|acrylic|pottery)$/.test(st.s) || /^review(-(watercolour|acrylic|pottery))?$/.test(st.s) || st.s==='home') return st.s;
+  return 'home';
+}
+function render(){
+  const name = screenName();
+  $$('.screen').forEach(el=>el.classList.toggle('on', el.dataset.s===name));
+  $('#navwrap').style.display = name==='choose' ? 'none' : '';
+  const onHome = name==='home';
+  $$('.tab').forEach(t=>t.classList.remove('on'));
+  const ht = $('.tab[data-go="home"]'), dt = $('.tab[data-go="discover"]');
+  (onHome?ht:dt).classList.add('on');
+  ht.querySelector('img').src = onHome ? 'assets/n_home_on.svg' : 'assets/n_home.svg';
+  dt.querySelector('img').src = onHome ? 'assets/n_disc.svg' : 'assets/n_disc_on.svg';
+  if (name==='discover-b') layoutDeck(false);
+  if (typeof syncBar==='function') syncBar();
+  document.title = 'Trace';
+}
+
+/* ================= SWIPE DECK (version B) ================= */
+const OP = [1,.85,.7,.55];
+function layoutDeck(){
+  $$('#deck .card').forEach(el=>{
+    const d = +el.dataset.i - (st.card-1);
+    el.classList.remove('drag');
+    el.querySelector('.count').style.display = d===0 ? '' : 'none';
+    if (d < 0){ el.style.cssText = `left:20px;top:318px;width:362px;opacity:0;transform:translateX(-520px) rotate(-14deg);z-index:20;pointer-events:none`; return; }
+    el.style.cssText = `left:${20+8*d}px;top:${318+10*d}px;width:${362-16*d}px;opacity:${OP[d]};transform:none;z-index:${10-d};pointer-events:${d===0?'auto':'none'}`;
+  });
+}
+function topCard(){ return $(`#deck .card[data-i="${st.card-1}"]`); }
+let busy = false;
+function commit(dir){
+  if (busy) return; const el = topCard(); if (!el) return;
+  busy = true; el.classList.remove('drag');
+  el.style.transform = `translateX(${dir*520}px) rotate(${dir*14}deg)`; el.style.opacity = '0';
+  setTimeout(()=>{
+    busy = false;
+    if (dir < 0) go('discover', { card: st.card + 1 });
+    else go('session-' + el.dataset.id);
+  }, 230);
+}
+(function(){
+  let el=null, x0=0, y0=0, dx=0, moved=false, z=1;
+  const deck = $('#deck');
+  deck.addEventListener('pointerdown', e=>{
+    const c = e.target.closest('.card'); if (!c || c!==topCard() || busy) return;
+    el=c; x0=e.clientX; y0=e.clientY; dx=0; moved=false; const cs=getComputedStyle(document.documentElement); z=(parseFloat(cs.getPropertyValue('--z'))||1)*(framed()?(parseFloat(cs.getPropertyValue('--fit'))||1):1);
+    el.classList.add('drag'); try{ el.setPointerCapture(e.pointerId); }catch(_){}
+  });
+  deck.addEventListener('pointermove', e=>{
+    if (!el) return; dx = e.clientX-x0;
+    if (Math.abs(dx)>8 || Math.abs(e.clientY-y0)>8) moved = true;
+    el.style.transform = `translateX(${dx/z}px) rotate(${dx/z/22}deg)`;
+  });
+  const end = e=>{
+    if (!el) return; const c=el; el=null;
+    if (!moved){ const r=c.getBoundingClientRect(); commit((e.clientX-r.left)/r.width < .5 ? -1 : 1); return; }
+    if (Math.abs(dx) > 70) commit(dx<0?-1:1);
+    else { c.classList.remove('drag'); c.style.transform='none'; }
+  };
+  deck.addEventListener('pointerup', end);
+  deck.addEventListener('pointercancel', e=>{ if(el){ el.classList.remove('drag'); el.style.transform='none'; el=null; } });
+})();
+
+/* ================= CLICKS ================= */
+let toastT;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),1800); }
+document.addEventListener('click', e=>{
+  const g = e.target.closest('[data-go]'); const a = e.target.closest('[data-act]');
+  if (g){ const s=g.dataset.go; go(s, s==='discover'?{card:st.card}:{}); return; }
+  if (!a) return;
+  const act = a.dataset.act;
+  if (act==='back') back();
+  else if (act==='skip') commit(-1);
+  else if (act==='view') commit(1);
+  else if (act==='restart') go('discover', { card:1 });
+});
+
+/* ================= FIT TO PHONE WIDTH ================= */
+/* Phones (and Maze's 420px mobile window) get the app full-screen.
+   Wider screens get the phone frame + control bar, like a demo page.  */
+function fit(){
+  const root = document.documentElement, w = root.clientWidth;
+  const isFramed = w >= 600;
+  root.classList.toggle('framed', isFramed);
+  root.style.setProperty('--z', (isFramed ? 1 : w/402).toFixed(4));
+  const barH = isFramed ? $('#bar').offsetHeight : 0;
+  const f = isFramed && fitOn ? Math.min(1, (innerHeight - barH - 52) / 898) : 1;
+  root.style.setProperty('--fit', Math.max(.45, f).toFixed(4));
+  const b = $('#bFit'); if (b) b.classList.toggle('on', fitOn);
+}
+addEventListener('resize', fit);
+
+/* ================= DESKTOP CONTROL BAR ================= */
+function syncBar(){
+  $$('[data-ver]').forEach(b=>b.classList.toggle('on', b.dataset.ver===st.v));
+  $('#bHot').classList.toggle('on', hotOn);
+}
+$$('[data-ver]').forEach(b=>b.addEventListener('click', ()=>{
+  if (b.dataset.ver===st.v) return;
+  st.v = b.dataset.ver; history.pushState({ d:0 }, '', urlFor('home')); readURL(); render(); setY(0);
+}));
+$('#bFit').addEventListener('click', ()=>{ fitOn = !fitOn; fit(); });
+$('#bHot').addEventListener('click', ()=>{ hotOn = !hotOn; readURL(); syncBar(); });
+$('#bReset').addEventListener('click', ()=>{
+  if (!st.v) st.v = 'a';
+  st.card = 1; history.replaceState({ d:0 }, '', urlFor('home')); readURL(); render(); setY(0);
+});
+
+/* ================= START ================= */
+buildListA(); buildDeck(); WRONG.forEach(buildSession);
+fit(); readURL();
+if (st.v && !history.state) history.replaceState({ d:0 }, '', urlFor(st.s==='discover-end'?'discover-end':st.s, st.card));
+readURL(); render();
+addEventListener('load', ()=>{
+  fit();
+  ['home.jpg','discover-end.jpg','session-a.jpg','review.jpg','photo_watercolour.jpg','photo_acrylic.jpg','photo_tablet.jpg','photo_pottery.jpg','review-watercolour.jpg','review-acrylic.jpg','review-pottery.jpg','logo_culturepass.png']
+    .forEach(f=>{ const i=new Image(); i.src='assets/'+f; });
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
+});
+</script>
+</body>
+</html>

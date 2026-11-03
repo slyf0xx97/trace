@@ -1,0 +1,8 @@
+# deploy copy, rebuilt from full/ before each deploy
+site/
+trace-site.zip
+# leftover downloads and one-off Figma upload scratch
+dl/
+figup/
+figup*.cmd
+.playwright-mcp/

@@ -1,0 +1,9 @@
+{
+  "name": "Trace",
+  "short_name": "Trace",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#eef4f9",
+  "theme_color": "#eef4f9",
+  "icons": [{ "src": "assets/mark_lg.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
