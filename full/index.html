@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script>/* clear old saved copies once per version so updates always show */
-(function(){var V='20261103c';try{if(localStorage.getItem('trace-ver')!==V){localStorage.setItem('trace-ver',V);var done=function(){location.reload();};
+(function(){var V='20261103d';try{if(localStorage.getItem('trace-ver')!==V){localStorage.setItem('trace-ver',V);var done=function(){location.reload();};
 var p=('caches' in window)?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));}):Promise.resolve();
 p.then(function(){return navigator.serviceWorker?navigator.serviceWorker.getRegistrations():[];}).then(function(rs){return Promise.all((rs||[]).map(function(r){return r.update().catch(function(){});}));}).then(done,done);}}catch(e){}})();
 </script>
@@ -96,7 +96,6 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 html.framed,html.framed body{background:radial-gradient(1200px 700px at 50% -10%,#24384d 0%,#111b26 55%,#0b121a 100%) fixed;min-height:100vh}
 html.framed #stage{display:flex;flex-direction:column;align-items:center;gap:18px;padding:16px 16px 28px}
 html.framed #bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;color:#e8eef5;width:100%;max-width:1180px}
-#bar .vers{margin-left:auto}
 .grp{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:6px}
 .brand{gap:10px;padding:6px 14px 6px 8px}
 .brand .mk{width:34px;height:34px;border-radius:10px;background:#eef4f9;display:flex;align-items:center;justify-content:center}
@@ -122,7 +121,7 @@ html.framed #status{display:flex;position:absolute;left:0;right:0;top:0;height:5
 #status .ic{display:flex;gap:6px;align-items:center}
 html.framed #homebar{display:block;position:absolute;left:50%;bottom:7px;width:136px;height:5px;margin-left:-68px;border-radius:3px;background:#152331;opacity:.85;z-index:35;pointer-events:none}
 </style>
-<link rel="stylesheet" href="native.css?v=20261103c">
+<link rel="stylesheet" href="native.css?v=20261103d">
 </head>
 <body>
 <div id="stage">
@@ -134,7 +133,6 @@ html.framed #homebar{display:block;position:absolute;left:50%;bottom:7px;width:1
     <button class="bb" id="bFit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Fit screen</button>
     <button class="bb go" id="bReset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.6M4 4v4.6h4.6"/></svg>Reset</button>
     </div>
-  <div class="grp vers"><span class="lbl">Discover</span><button class="bb" data-ver="a">A: List</button><button class="bb" data-ver="b">B: Swipe deck</button></div>
 </header>
 <div id="phone"><div id="screen">
 <div id="status" aria-hidden="true"><span>9:41</span><span class="isl"></span>
@@ -152,9 +150,9 @@ html.framed #homebar{display:block;position:absolute;left:50%;bottom:7px;width:1
 <div id="homebar" aria-hidden="true"></div>
 </div></div>
 </div>
-<script src="data.js?v=20261103c"></script>
-<script src="native.js?v=20261103c"></script>
-<script src="player.js?v=20261103c"></script>
-<script src="appmode.js?v=20261103c"></script>
+<script src="data.js?v=20261103d"></script>
+<script src="native.js?v=20261103d"></script>
+<script src="player.js?v=20261103d"></script>
+<script src="appmode.js?v=20261103d"></script>
 </body>
 </html>

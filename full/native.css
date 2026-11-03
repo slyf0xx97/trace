@@ -517,21 +517,10 @@ html:not(.framed) #mfab{zoom:var(--z)}
 .nx-scard .nm{position:absolute;left:14px;bottom:10px;right:14px;z-index:1;color:#fff;font-family:Outfit;font-weight:600;font-size:20px;text-shadow:0 1px 6px rgba(0,0,0,.3)}
 .nx-scard .cpb{position:absolute;right:10px;top:10px;z-index:1;display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:4px 10px 4px 5px;line-height:1.05}
 .nx-scard .cpb b{display:block;font-size:12px}.nx-scard .cpb small{font-size:10.5px;color:#52606f}
-.nx-scard .cnt{position:absolute;left:10px;top:10px;z-index:1;background:#fff;border-radius:999px;padding:4px 10px;font-weight:600;font-size:13px}
 .nx-scard .bk{position:absolute;left:10px;top:10px;z-index:1;background:#417f4c;color:#fff;border-radius:999px;padding:4px 10px;font-weight:600;font-size:12px}
 .nx-scard .bd{padding:12px 14px 14px}
-.nx-scard.deck .ph{height:170px}
 .nx-tbar{position:relative;height:5px;border-radius:3px;background:#e1e6ec;margin-top:10px;overflow:hidden}
 .nx-tbar i{position:absolute;top:0;bottom:0;border-radius:3px;background:#3a6ea5}
-.nx-deck{position:relative;height:396px}
-.nx-deck .lay{position:absolute;left:0;right:0;top:0}
-.nx-deck .lay.l1{transform:translateY(10px) scale(.96);opacity:.7;pointer-events:none}
-.nx-deck .lay.l2{transform:translateY(20px) scale(.92);opacity:.45;pointer-events:none}
-.nx-deck .lay.l0 .nx-scard{position:relative;z-index:2;animation:rise .35s both}
-.nx-round{width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 4px 12px rgba(21,35,49,.12);display:flex;align-items:center;justify-content:center;color:#152331}
-.nx-round.main{width:62px;height:62px;background:#3a6ea5;color:#fff}
-.nx-round[disabled]{opacity:.35}
-.nx-round svg{width:22px;height:22px}
 .nx-steps{display:flex;align-items:flex-start;margin-top:12px}
 .nx-steps .st{display:flex;flex-direction:column;align-items:center;gap:4px;width:70px;text-align:center}
 .nx-steps .st span{width:24px;height:24px;border-radius:50%;border:2px solid #c9d3dd;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#52606f}
@@ -541,8 +530,6 @@ html:not(.framed) #mfab{zoom:var(--z)}
 .nx-steps .st small{font-size:10.5px;color:#52606f}
 .nx-steps i{flex:1;margin-top:12px;border-top:2.5px dotted #c9d3dd}
 #nsheet .nx-steps{margin-top:0}
-#mfab .mf-ver{padding:0 10px;gap:5px;background:rgba(255,255,255,.14)}
-#mfab .mf-ver b{width:20px;height:20px;border-radius:50%;background:#fff;color:#152331;font-size:12px;display:flex;align-items:center;justify-content:center}
 .nx-scard .bd b{white-space:nowrap}
 .nx-scard .bd s+b,.nx-scard .bd span>b{font-size:13px}
 .nx-tap,.nx-hold-ring{display:none!important}

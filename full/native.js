@@ -1258,8 +1258,6 @@ const ACT = {
   filters(){ t().run(['o:3071:1095']); }, changeTime(){ t().run(['o:3071:1098']); }, askTrace(){ t().run(['o:3071:1101']); },
   allActs(){ S.dq=''; save(); refresh(); toast('Showing all Saturday activities', 'spark'); },
   msgOrg(el){ toast('Opens Telegram to message '+SX(el.dataset.s).org, 'chat'); },
-  deckNext(){ DECK++; refresh(); }, deckPrev(){ DECK = Math.max(0, DECK-1); refresh(); }, deckReset(){ DECK = 0; refresh(); },
-  deckOpen(){ const x = SESS[Math.min(DECK, SESS.length-1)]; go('s/'+x.id); },
   useCp(el){ S.useCp = S.useCp||{}; const id = el.dataset.s; S.useCp[id] = S.useCp[id] === false; save(); refresh(); },
   confirmBook(el){ confirmBook(el.dataset.s); }
 };
@@ -1283,7 +1281,7 @@ document.addEventListener('click', e=>{ if (e.target.closest('#nsheet [data-clos
 
 
 
-/* ================= DISCOVER (version A list, version B swipe deck) + SESSIONS + BOOKING ================= */
+/* ================= DISCOVER + SESSIONS + BOOKING ================= */
 const SESS = [
   { id:'pencil', name:'Pencil drawing for beginners', org:'The Sketch Room', tg:'@thesketchroom', img:'s_pencil.jpg', start:'2:00pm', end:'5:00pm', short:'2:00 to 5:00pm', hours:3, price:32, cp:true, walk:'12 min walk from you', tags:['Traditional','Beginner'],
     inc:[['Pencils and paper provided','Everything is set out for you'],['Line, shading and form','Guided step by step'],['One-off drop-in','No membership or course']] },
@@ -1296,50 +1294,27 @@ const SESS = [
   { id:'callig', name:'Modern calligraphy taster', org:'Ink & Quill', tg:'@inkandquill', img:'s_callig.jpg', start:'2:00pm', end:'5:00pm', short:'2:00 to 5:00pm', hours:3, price:26, cp:true, walk:'10 min walk from you', tags:['Lettering','Beginner'],
     inc:[['Brush pens and paper provided','Take your practice sheets home'],['Letterforms and strokes','Guided drills, then your own words'],['Beginner friendly','No experience needed']] } ];
 const SX = id => SESS.find(x=>x.id===id);
-const ver = () => (S.ver==='b' ? 'b' : 'a');
 const CP = '<img src="../assets/logo_culturepass.png" alt="" style="width:20px;height:20px;border-radius:50%">';
 function timeBar(x){ const s = x.start==='3:00pm' ? 33.3 : 0; return `<div class="nx-tbar"><i style="left:${s}%;width:${100-s}%"></i></div><div class="nx-row" style="justify-content:space-between;font-size:11px;color:#6a7683;margin-top:3px"><span>2pm</span><span>5pm</span></div>`; }
-function sessCard(x, i, deck){
+function sessCard(x){
   const booked = (S.bookings||{})[x.id];
-  return `<div class="nx-scard ${deck?'deck':''}" data-s="${x.id}" ${deck?'':`data-go="s/${x.id}"`} role="button" tabindex="0" aria-label="${esc(x.name)}">
-    <div class="ph" style="background-image:url('${IMG+x.img}')">${deck?`<span class="cnt">${i+1} of ${SESS.length}</span>`:''}${x.cp?`<span class="cpb">${CP}<span><b>Culture Pass</b><small>eligible</small></span></span>`:''}<b class="nm">${esc(x.name)}</b>${booked?'<span class="bk">Booked</span>':''}</div>
+  return `<div class="nx-scard" data-s="${x.id}" data-go="s/${x.id}" role="button" tabindex="0" aria-label="${esc(x.name)}">
+    <div class="ph" style="background-image:url('${IMG+x.img}')">${x.cp?`<span class="cpb">${CP}<span><b>Culture Pass</b><small>eligible</small></span></span>`:''}<b class="nm">${esc(x.name)}</b>${booked?'<span class="bk">Booked</span>':''}</div>
     <div class="bd"><div class="nx-muted nx-row" style="gap:5px">${ic('pin').replace('<svg','<svg style="width:13px;height:13px"')}${esc(x.org)}</div>
       <div class="nx-row" style="justify-content:space-between;margin-top:4px"><span class="nx-row" style="gap:8px"><b style="font-size:16px">Sat ${esc(x.short)}</b><span class="nx-tag" style="padding:2px 8px">${x.hours} h</span></span>
       ${x.cp?`<span><s style="color:#8b98a6;font-size:13px">$${x.price}</s> <b style="color:#2b5a87;font-size:14px">$0 with credits</b></span>`:`<b>$${x.price}</b>`}</div>
-      ${timeBar(x)}${deck?`<div class="nx-row" style="gap:6px;margin-top:10px">${x.tags.map(t=>`<span class="nx-tag ${t==='Beginner'?'green':''}">${esc(t)}</span>`).join('')}</div>`:''}</div></div>`;
+      ${timeBar(x)}</div></div>`;
 }
-let DECK = 0;
 function dDiscover(v){
-  const b = ver()==='b';
   const head = `<div class="nx-tabs" style="margin-top:10px"><button class="on">Discover</button><button data-go="3071:1085">Trace Match</button></div>
     <div class="nx-row" style="gap:8px"><label class="nx-search">${ic('search')}<input id="dq" placeholder="Search Saturday activities" value="${esc(S.dq||'')}" aria-label="Search activities"></label><button class="nx-filt" data-act="filters">Filters <span>2</span></button></div>
     <div class="nx-row" style="gap:8px;margin:12px 0"><button class="nx-pill sm on">For you</button><button class="nx-pill sm" data-act="allActs">All activities</button><span class="nx-sp"></span><button class="nx-link" data-act="filters">Edit interests</button></div>
     <div class="nx-free"><span class="dot"></span><b>Sat 20 Sep, 2 to 5pm free</b><span class="nx-sp"></span><button class="nx-mini" style="background:#fff;border-color:#d9e6d4;box-shadow:none;color:#2f6239" data-act="changeTime">${ic('clock')}Change time</button></div>`;
   const q = (S.dq||'').toLowerCase().trim();
   const list = SESS.filter(x=>!q || (x.name+' '+x.org+' '+x.tags.join(' ')).toLowerCase().includes(q));
-  let body;
-  if (!b){
-    body = list.length ? list.map((x,i)=>sessCard(x,i,false)).join('') : `<div class="nx-card" style="text-align:center" ><b>No sessions match "${esc(q)}"</b><div class="nx-muted">Try another word, or clear the search.</div></div>`;
-  } else {
-    const n = SESS.length, i = Math.min(DECK, n);
-    body = `<div class="nx-row" style="justify-content:space-between;font-size:13px;color:#52606f;margin:4px 2px 10px"><span class="nx-row" style="gap:6px"><img src="../assets/swipe_left.svg" alt="" style="width:18px">Swipe for next activity</span><span>Tap card for more info</span></div>
-      <div class="nx-deck" id="deck">${i < n ? SESS.slice(i, i+3).map((x,k)=>`<div class="lay l${k}">${sessCard(x, i+k, true)}</div>`).reverse().join('')
-        : `<div class="nx-card" style="text-align:center;padding:30px 18px"><span class="nx-ico green" style="margin:0 auto 10px;width:52px;height:52px">${ic('check')}</span><b style="font-size:17px">You have seen all ${n}</b><div class="nx-muted" style="margin:6px 0 16px">Start again to look through them once more.</div><button class="nx-btn sm" data-act="deckReset">Start again</button></div>`}</div>
-      ${i < n ? `<div class="nx-row" style="justify-content:center;gap:26px;margin-top:14px"><button class="nx-round" data-act="deckPrev" aria-label="Previous" ${i===0?'disabled':''}>${ic('chev').replace('<svg','<svg style="transform:scaleX(-1)"')}</button><button class="nx-round main" data-act="deckOpen" aria-label="Open this session">${ic('eye')}</button><button class="nx-round" data-act="deckNext" aria-label="Next">${ic('chev')}</button></div>`:''}`;
-  }
+  const body = list.length ? list.map(x=>sessCard(x)).join('') : `<div class="nx-card" style="text-align:center" ><b>No sessions match "${esc(q)}"</b><div class="nx-muted">Try another word, or clear the search.</div></div>`;
   v.innerHTML = TOP() + head + `<div class="nx-gap"></div>` + body + `</div>`;
   const inp = $('#dq', v); if (inp) inp.addEventListener('input', ()=>{ S.dq = inp.value; save(); const pos = inp.selectionStart; refresh(); const n2 = $('#dq'); if (n2){ n2.focus(); n2.setSelectionRange(pos,pos); } });
-  if (b) AFTER.push(()=>bindDeck(v));
-}
-function bindDeck(v){
-  const top = $('#deck .l0 .nx-scard', v); if (!top) return;
-  let sx=0, sy=0, dx=0, drag=false, moved=false;
-  top.addEventListener('pointerdown', e=>{ drag=true; moved=false; sx=e.clientX; sy=e.clientY; dx=0; top.setPointerCapture && (()=>{ try{ top.setPointerCapture(e.pointerId); }catch(err){} })(); top.style.transition='none'; });
-  top.addEventListener('pointermove', e=>{ if(!drag) return; const z = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1; dx=(e.clientX-sx)/z; if (Math.abs(dx)>6) moved=true; top.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`; top.style.opacity = String(1-Math.min(.5,Math.abs(dx)/500)); });
-  const end = ()=>{ if(!drag) return; drag=false; top.style.transition='transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s';
-    if (Math.abs(dx) > 90){ top.style.transform=`translateX(${dx>0?520:-520}px) rotate(${dx>0?24:-24}deg)`; top.style.opacity='0'; setTimeout(()=>{ DECK++; refresh(); }, 280); }
-    else { top.style.transform=''; top.style.opacity=''; if (!moved) go('s/'+top.dataset.s); } };
-  top.addEventListener('pointerup', end); top.addEventListener('pointercancel', end);
 }
 function sTop(x, back, where){ return BACKROW(back||'Back to Discover', 'd/discover', where||'Trace Start'); }
 function sDetail(v, id){
@@ -1506,6 +1481,5 @@ function mount(){
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
 if (typeof TABS !== 'undefined'){ TABS.p = 'p/hobbies'; TABS.w = 'n/feed'; TABS.d = 'd/discover'; }
-(function(){ const q = new URLSearchParams(location.search).get('v'); if (q==='a'||q==='b'){ S.ver = q; save(); } })();
-window.NATIVE = { resolve, render, reset, decorate, list: LIST, setVer(v){ S.ver = v; DECK = 0; save(); }, getVer: ()=>ver(), get state(){ return S; } };
+window.NATIVE = { resolve, render, reset, decorate, list: LIST, get state(){ return S; } };
 })();

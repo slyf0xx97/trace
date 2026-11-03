@@ -170,10 +170,10 @@ function pre(src){ if (loaded.has(src)) return; loaded.add(src); const i = new I
 function preload(s, vid){
   const acts = [...(s.hs||[]), ...(vid ? DATA.C[s.cs[0]].vs[vid].hs : [])].flatMap(h=>h[4].split('|'));
   acts.forEach(a=>{ const m = a.match(/(?:^|>)(n|o|s|c):(.+)$/); if (!m) return; const d = m[2];
-    if (m[1]==='n' && DATA.S[d]) pre(file(DATA.S[d].cs ? (state.content[d] || DATA.S[d].cs[1]) : d) + '.jpg');
+    if (m[1]==='n' && DATA.S[d] && !(window.NATIVE && NATIVE.resolve(d))) pre(file(DATA.S[d].cs ? (state.content[d] || DATA.S[d].cs[1]) : d) + '.jpg');
     if ((m[1]==='o'||m[1]==='s') && SHEETS[d]) pre(file(SHEETS[d]) + '.png');
     if (m[1]==='c' && VARSET[d]) pre(file(d) + '.jpg'); });
-  Object.values(TABS).forEach(t=>{ const x = DATA.S[t]; if (x) pre(file(x.cs ? (state.content[t] || x.cs[1]) : t) + '.jpg'); });
+  Object.values(TABS).forEach(t=>{ const x = DATA.S[t]; if (x && !(window.NATIVE && NATIVE.resolve(t))) pre(file(x.cs ? (state.content[t] || x.cs[1]) : t) + '.jpg'); });
 }
 
 /* ---------- nav, control bar, fit ---------- */
@@ -182,9 +182,6 @@ const pick = $('#pick');
 if (window.NATIVE) NATIVE.list.forEach(([id,n])=>{ const o = document.createElement('option'); o.value = id; o.textContent = n; pick.appendChild(o); });
 Object.entries(DATA.S).forEach(([id,s])=>{ const o = document.createElement('option'); o.value = id; o.textContent = s.n; pick.appendChild(o); });
 pick.addEventListener('change', ()=>go(pick.value));
-const paintVer = ()=>$$('[data-ver]').forEach(b=>b.classList.toggle('on', window.NATIVE && NATIVE.getVer()===b.dataset.ver));
-$$('[data-ver]').forEach(b=>b.addEventListener('click', ()=>{ NATIVE.setVer(b.dataset.ver); paintVer(); go('d/discover'); }));
-paintVer(); window.paintVer = paintVer;
 $('#bFit').addEventListener('click', ()=>{ state.fit = !state.fit; fit(); });
 $('#bReset').addEventListener('click', ()=>{ state.content = {}; state.widgets = {}; if (window.NATIVE) NATIVE.reset(); go(START, true); });
 /* phones (and phones in "desktop site" mode) always get the app edge to edge, never the desktop frame */

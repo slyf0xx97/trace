@@ -14,7 +14,6 @@ const ICON = {
 };
 const fab = document.createElement('div'); fab.id = 'mfab';
 fab.innerHTML = `<button class="mf-go" aria-label="Full screen">${ICON.full}<span>Full screen</span></button>
-  <button class="mf-ver" aria-label="Switch Discover version"><b>A</b><span>List</span></button>
   <button class="mf-ic mf-reset" aria-label="Reset demo">${ICON.reset}</button>
   <button class="mf-ic mf-install" aria-label="Install app" hidden>${ICON.dl}</button>
   <button class="mf-ic mf-hide" aria-label="Hide">${ICON.x}</button>`;
@@ -31,10 +30,6 @@ async function goFull(){
 function hint(msg){ const t = document.getElementById('ntoast'); if (t){ t.innerHTML = '<div><span>'+msg+'</span></div>'; setTimeout(()=>t.innerHTML='', 4200); } else alert(msg); }
 
 fab.querySelector('.mf-go').addEventListener('click', goFull);
-const verBtn = fab.querySelector('.mf-ver');
-const paintV = ()=>{ const v = window.NATIVE ? NATIVE.getVer() : 'a'; verBtn.innerHTML = `<b>${v.toUpperCase()}</b><span>${v==='a'?'List':'Swipe'}</span>`; };
-verBtn.addEventListener('click', ()=>{ const v = NATIVE.getVer()==='a' ? 'b' : 'a'; NATIVE.setVer(v); paintV(); if (window.paintVer) window.paintVer(); TRACE.go('d/discover'); hint(v==='a' ? 'Version A: Discover as a list' : 'Version B: Discover as a swipe deck'); });
-setTimeout(paintV, 0);
 fab.querySelector('.mf-reset').addEventListener('click', ()=>{
   if (!confirmReset()) return;
   if (window.NATIVE) NATIVE.reset();

@@ -15,9 +15,8 @@
 <meta name="theme-color" content="#eef4f9">
 <link rel="icon" href="assets/mark_lg.svg" type="image/svg+xml">
 <script>
-/* trace.ghernie.com opens the full app. ?v=a or ?v=b picks the Discover version. */
-(function(){ var q = new URLSearchParams(location.search), v = q.get('v');
-  location.replace('full/' + ((v === 'a' || v === 'b') ? '?v=' + v : '') + location.hash); })();
+/* trace.ghernie.com opens the full app. */
+location.replace('full/' + location.hash);
 </script>
 <style>body{margin:0;background:#eef4f9;font:16px system-ui;color:#152331;display:flex;align-items:center;justify-content:center;height:100vh}</style>
 </head>
