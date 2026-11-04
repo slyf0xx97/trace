@@ -958,7 +958,7 @@ function seedCard(p){
 }
 function nFeed(v){
   v.innerHTML = TOP() + netTabs('n/feed') + `
-    <div class="nx-card nx-row"><span class="nx-row" style="gap:2px">${PIN.replace('<svg','<svg style="width:22px;height:22px"')}${IG.replace('<svg','<svg style="width:22px;height:22px"')}</span><div class="nx-sp"><div style="font-weight:700">Pinterest + Instagram</div><div class="nx-muted">Ask before each share</div></div><span class="nx-tag green">${ic('check')}6 connected</span></div>
+    <button class="nx-card nx-row nx-linked" data-go="n/platforms"><span class="nx-row" style="gap:3px">${PIN.replace('<svg','<svg style="width:18px;height:18px"')}${IG.replace('<svg','<svg style="width:18px;height:18px"')}</span><span class="nx-sp"><b>Pinterest + Instagram</b><span class="nx-muted">Ask before each share</span></span><span class="nx-tag green">${ic('check')}6 connected</span></button>
     <div class="nx-card nx-row"><span class="nx-ico green">${ic('users')}</span><div class="nx-sp"><div style="font-weight:700">Auto-share Vault uploads</div><div class="nx-muted">New uploads post to Trace Network only. Instagram and Pinterest still ask.</div></div><button class="nx-tog ${S.autoNet?'on':''}" role="switch" aria-checked="${S.autoNet}" aria-label="Auto-share Vault uploads" data-act="autoNet"><i></i></button></div>
     <div class="nx-gap"></div>
     ${S.posts.map(postCard).join('<div class="nx-gap"></div>')}${S.posts.length?'<div class="nx-gap"></div>':''}

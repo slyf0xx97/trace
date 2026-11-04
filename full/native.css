@@ -840,3 +840,9 @@ html.framed #screen:active,html.framed #screen *:active{cursor:url("data:image/s
 .nx-creds .nx-lg{width:32px;height:32px}
 .nx-creds small{white-space:nowrap;font-size:11.5px}
 .nx-spw{margin-left:-3px}
+
+/* ===== 2026-11-04: compact linked-accounts strip under the Network tabs ===== */
+.nx-linked{width:100%;margin-top:16px;padding:10px 14px;gap:10px;text-align:left;border-radius:16px}
+.nx-linked b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.nx-linked .nx-muted{display:block;font-size:12px}
+.nx-linked .nx-tag{font-size:11px;padding:3px 8px}
