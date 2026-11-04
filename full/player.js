@@ -74,6 +74,8 @@ function run(acts){
 }
 
 /* ---------- screens ---------- */
+// looping background motion (clouds, floating tiles, sparkles) runs on the page clock, so a re-render picks up where it was
+const keepLoops = v => { if (v.getAnimations) v.getAnimations({ subtree:true }).forEach(a => { if (a.effect && a.effect.getTiming().iterations === Infinity) a.startTime = 0; }); };
 function render(id, anim){
   clearTimeout(timer);
   $('#app').dataset.dir = DIR; DIR = 'f';
@@ -83,6 +85,7 @@ function render(id, anim){
     const view = document.createElement('div'); view.className = 'view nview' + (anim ? ' in' : '');
     const app = $('#app'); app.innerHTML = ''; app.appendChild(view);
     const meta = NATIVE.render(nid, view);
+    keepLoops(view);
     $$('.tab').forEach(t=>t.classList.toggle('on', t.dataset.tab === meta.nav));
     $('#navwrap').style.display = '';
     if (![...pick.options].some(o=>o.value===nid)){ const o = document.createElement('option'); o.value = nid; o.textContent = meta.title + ' (app)'; pick.appendChild(o); }
@@ -114,7 +117,7 @@ function render(id, anim){
     if (t){ const m = t.match(/^T(\d+)>(.*)$/); timer = setTimeout(()=>{ if (state.cur===id && (state.content[id]||s.cs[1])===vid) run([m[2]]); }, +m[1]); }
   }
   if (window.NATIVE && NATIVE.decorate) NATIVE.decorate(id, view, anim);
-  const app = $('#app'); app.innerHTML = ''; app.appendChild(view);
+  const app = $('#app'); app.innerHTML = ''; app.appendChild(view); keepLoops(view);
   // nav
   $$('.tab').forEach(t=>t.classList.toggle('on', t.dataset.tab === s.nav));
   $('#navwrap').style.display = s.nav ? '' : 'none';

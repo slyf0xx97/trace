@@ -1439,7 +1439,7 @@ function hMe(v){
   <div class="nx-label">Settings</div>
   <div class="nx-list">${[[lg(LOGO('l_gcal')),'Calendar access','Google Calendar, read and add events','home/schedule'],[`<span class="nx-ico">${ic('clock')}</span>`,'Notifications','One session suggestion at a time',''],[`<span class="nx-ico">${ic('link')}</span>`,'Sharing settings',sh.preview===false?'Posts go out without a preview':'Nothing is posted without a preview','n/platforms'],[`<span class="nx-ico">${ic('file')}</span>`,'Data and downloads','Export or delete your record','p/transcript']]
     .map(([i,tt,s,to])=>`<button class="nx-li" ${to?`data-go="${to}"`:'data-act="notif"'}>${i}<div class="nx-sp"><div class="t">${tt}</div><div class="s">${s}</div></div>${ic('chev','nx-chev')}</button>`).join('')}</div>
-  <div style="margin-top:16px"><button class="nx-btn ghost" data-act="signOut">Sign out</button></div></div>`;
+  <div style="margin-top:16px"><button class="nx-btn ghost" disabled aria-disabled="true">Sign out</button></div></div>`;
 }
 
 function hRewards(v){
@@ -1626,7 +1626,6 @@ Object.assign(ACT, {
   singpass(){ S.sp = true; save(); refresh(); toast('Singpass linked. Your CCA records are syncing.', 'check'); },
   connect(el){ S.conn = Object.assign({}, S.conn, { [el.dataset.k]: true }); save(); refresh(); toast('Strava connected. Runs and rides now count as sessions.', 'check'); },
   notif(){ toast('Trace sends one session suggestion at a time', 'clock'); },
-  signOut(){ toast('This is a demo account, so you stay signed in', 'info'); },
   claim(el){ const r = REWARDS.find(x=>x.id===el.dataset.id); if (!r || credits() < r.cost) return; S.claimed = Object.assign({}, S.claimed, { [r.id]: TODAY }); save(); refresh(); toast(`${r.n} claimed. ${r.cost} TC used.`, 'gift'); },
   tmCat(el){ TMCAT = el.dataset.c; refresh(); },
   tmLoc(){ S.loc = S.loc === false; save(); refresh(); },
