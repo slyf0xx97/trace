@@ -1448,7 +1448,7 @@ function hRewards(v){
     ...(S.gained ? [['calendar','Booked a session','Today',`+${Math.round(S.gained/4)} TC`]] : []),
     ['check','Attended a session','12 Sep, ArtHaus Studio','+120 TC'],['award','Claimed LifeSG voucher','10 Sep','-100 TC'],['upload','Uploaded artwork to Vault','8 Sep','+40 TC']];
   v.innerHTML = BACKROW('Back to Home','home','Rewards') + `
-  <div class="nx-card nx-row" style="gap:16px"><span class="nx-tcring" style="${ring(Math.min(1,c/cp.cost),0,'#3a6ea5','#dfe8f2')}"><span><b data-count="${c}">${fmt(c)}</b><small>TC</small></span></span>
+  <div class="nx-card nx-row" style="gap:16px;margin-top:18px"><span class="nx-tcring" style="${ring(Math.min(1,c/cp.cost),0,'#3a6ea5','#dfe8f2')}"><span><b data-count="${c}">${fmt(c)}</b><small>TC</small></span></span>
     <div class="nx-sp"><div class="nx-label" style="margin:0 0 4px">Trace credits</div><div class="nx-h2" style="font-size:18px">${toCp?`${fmt(toCp)} TC to your SG Culture Pass top-up`:'You have enough for an SG Culture Pass top-up'}</div><span class="nx-tag" style="margin-top:8px">${ic('flame')}+160 this month</span></div></div>
   <div class="nx-label">Ways to earn</div>
   <div class="nx-grid">${[['check','+120','Attend a session'],['upload','+40','Upload to Vault'],['flame','+60','Keep a weekly streak']].map(([i,p,tt])=>`<div class="nx-card nx-earn"><span class="nx-ico round">${ic(i)}</span><b>${p}</b><small>${tt}</small></div>`).join('')}</div>
