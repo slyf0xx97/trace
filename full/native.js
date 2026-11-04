@@ -1362,8 +1362,8 @@ function confirmBook(id){
   const x = SX(id);
   if (x.end==='5:00pm' && !(S.tightOk||{})[id]){
     const el = sheet(`<div style="text-align:center"><span class="nx-ico" style="margin:0 auto 10px;width:52px;height:52px;border-radius:50%;background:#fff4d6;color:#8a5a00">${ic('info')}</span><h3>Heads up: tight timing</h3>
-      <div class="nx-muted" style="font-size:15px">This session ends at 5:00pm. Your CS2040 tutorial starts at 5:00pm and the venue is a ${esc(x.walk.split(' walk')[0])} walk away, so you would have no time to travel.</div>
-      <div class="nx-row" style="justify-content:center;gap:8px;margin:14px 0"><span class="nx-tag">Session 2:00 to 5:00pm</span><span class="nx-tag amber">CS2040 5:00pm</span></div></div>
+      <div class="nx-muted" style="font-size:15px">This session ends at 5:00pm and your online class starts at 5:05pm. You would have 5 minutes to find a quiet spot and log on.</div>
+      <div class="nx-row" style="justify-content:center;gap:8px;margin:14px 0"><span class="nx-tag">Session 2:00 to 5:00pm</span><span class="nx-tag amber">Online class 5:05pm</span></div></div>
       <button class="nx-btn" data-other>See other times</button><div style="margin-top:10px"><button class="nx-btn ghost" data-any>Book anyway</button></div>`);
     $('[data-other]', el).addEventListener('click', ()=>{ closeSheet(); go('d/discover'); toast('Showing sessions that end before 4:30pm', 'clock'); });
     $('[data-any]', el).addEventListener('click', ()=>{ S.tightOk = S.tightOk||{}; S.tightOk[id] = true; closeSheet(); confirmBook(id); });
@@ -1418,7 +1418,7 @@ function hHome(v){
   <div class="nx-label">This weekend</div>
   <div class="nx-card">
     <div class="nx-row" style="justify-content:space-between"><span class="nx-h2" style="font-size:19px">Saturday 19 Sep</span><span class="nx-freet">${ic('clock')}${b?'booked 2 to 5pm':'free 2 to 5pm'}</span></div>
-    <div class="nx-agenda">${b?`<div><span>2pm</span><i class="on"></i><b>${esc(b.name)}</b></div>`:''}<div><span>5pm</span><i></i><b>CS2040 tutorial</b></div><div><span>6pm</span><i></i><b>Dinner, hall</b></div><div><span>7pm</span><i class="free"></i><em>Open: no events</em></div></div>
+    <div class="nx-agenda">${b?`<div><span>2pm</span><i class="on"></i><b>${esc(b.name)}</b></div>`:''}<div><span>5:05pm</span><i></i><b>Online class</b></div><div><span>6pm</span><i></i><b>Dinner, hall</b></div><div><span>7pm</span><i class="free"></i><em>Open: no events</em></div></div>
     <button class="nx-rowbtn" data-go="home/schedule"><span class="nx-ico">${ic('calendar')}${b?'<sup>+1</sup>':''}</span><b>Open schedule</b>${ic('chev')}</button></div>
   <div class="nx-label">Your XP</div><div id="hxpslot"></div>
   <div class="nx-card" style="margin-top:14px"><div class="nx-h2" style="font-size:18px;margin-bottom:4px">Trace Credits History</div>
@@ -1470,17 +1470,17 @@ function analyser(){
     <div class="nx-label" style="margin:16px 0 8px">Saturday afternoons</div>
     <div class="an-sat">${sat.map(([tt,k])=>`<div><i class="${k}"></i><small>${tt}</small></div>`).join('')}</div>
     <div class="an-key"><span><i class="top"></i>Usually free</span><span><i></i>Sometimes free</span><span><i class="busy"></i>Likely busy</span></div>
-    <p class="nx-muted" style="font-size:14px;margin-top:10px"><b style="color:#347241">Sat 2 to 5pm is usually free</b> (3 of the last 4). <b style="color:#152331">Wed 5 to 7pm is likely busy</b> with CS2040. Trace re-checks each morning.</p></div>`;
+    <p class="nx-muted" style="font-size:14px;margin-top:10px"><b style="color:#347241">Sat 2 to 5pm is usually free</b> (3 of the last 4). <b style="color:#152331">Wed 5 to 7pm is likely busy</b> with your online class. Trace re-checks each morning.</p></div>`;
 }
 function hSchedule(v){
   const b = satBooking();
   const tabs = `<div class="nx-tabs" style="margin-top:14px">${['day','week','month'].map(k=>`<button class="${SCHV===k?'on':''}" data-act="schv" data-v="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div>`;
   let body;
   if (SCHV==='day'){
-    const rows = [['1pm','Family Time','Home'], b ? ['2pm',b.name,`${b.org}, ${b.short}`,'trace'] : ['2pm','Free 2 to 5pm','Nothing booked yet','free'], ['5pm','CS2040 tutorial','SoC TR3'], ['6pm','Dinner, hall','']];
+    const rows = [['1pm','Family Time','Home'], b ? ['2pm',b.name,`${b.org}, ${b.short}`,'trace'] : ['2pm','Free 2 to 5pm','Nothing booked yet','free'], ['5:05pm','Online class',''], ['6pm','Dinner, hall','']];
     body = `<div class="nx-label" style="margin-top:4px">Saturday 19 Sep</div><div class="sc-list">${rows.map(([tt,n,s,k])=>`<div class="sc-r"><span>${tt}</span><div class="sc-ev ${k||''} ${k==='trace'?'tall':''}">${k==='trace'?'<span class="nx-tag green">Added by Trace</span>':''}<b>${esc(n)}</b>${s?`<small>${esc(s)}</small>`:''}${k==='free'?`<button class="nx-link" data-go="d/discover" style="margin-top:6px">Find something to do${ic('chev')}</button>`:''}</div></div>`).join('')}</div>`;
   } else if (SCHV==='week'){
-    const rows = [['Mon 14','Piano practice, NAFA Keys: 6pm'],['Tue 15','Piano lesson, Ms Priya Nair: 5pm'],['Wed 16','CS2040 tutorial: 5pm'],['Thu 17','Free 7 to 9pm','free','Today'],['Fri 18','Nothing booked','free'],['Sat 19', b?`${b.name}: 2pm`:'Free 2 to 5pm', b?'trace':'free'],['Sun 20','Piano recital practice: 4pm']];
+    const rows = [['Mon 14','Piano practice, NAFA Keys: 6pm'],['Tue 15','Piano lesson, Ms Priya Nair: 5pm'],['Wed 16','Online class: 5:05pm'],['Thu 17','Free 7 to 9pm','free','Today'],['Fri 18','Nothing booked','free'],['Sat 19', b?`${b.name}: 2pm`:'Free 2 to 5pm', b?'trace':'free'],['Sun 20','Piano recital practice: 4pm']];
     body = `<div class="nx-label" style="margin-top:4px">14 to 20 September</div><div class="sc-list wk">${rows.map(([d,n,k,tag])=>`<div class="sc-r"><span>${d}</span><div class="sc-ev ${k||''}"><b>${esc(n)}</b>${tag?`<span class="nx-tag dark">${tag}</span>`:''}</div></div>`).join('')}</div>`;
   } else {
     const practice = [1,3,5,8,10,12,14,15], first = new Date(Date.UTC(2026,8,1)).getUTCDay();
@@ -1561,7 +1561,7 @@ function dFilterSheet(d){
 }
 function changeTimeSheet(sel){
   sel = sel || 0;
-  const opts = [['Sat 19 Sep, 2:00 to 5:00pm','Recommended. Fits your free time.','green'],['Sat 19 Sep, 5:30 to 8:30pm','Clashes with CS2040 tutorial at 5:00pm','amber'],['Sun 20 Sep, 11:00am to 2:00pm','Free in your calendar',''],['Sat 26 Sep, 2:00 to 5:00pm','Free in your calendar','']];
+  const opts = [['Sat 19 Sep, 2:00 to 5:00pm','Recommended. Fits your free time.','green'],['Sat 19 Sep, 5:30 to 8:30pm','Clashes with your online class at 5:05pm','amber'],['Sun 20 Sep, 11:00am to 2:00pm','Free in your calendar',''],['Sat 26 Sep, 2:00 to 5:00pm','Free in your calendar','']];
   const el = sheet(`<h3>Change time</h3><div class="nx-muted" style="font-size:15px">Other times for Beginner Digital Art, checked against your Google Calendar.</div>
     <div style="margin-top:12px">${opts.map(([tt,s,k],i)=>`<button class="nx-radio ${sel===i?'on':''}" data-i="${i}"><span class="dot"></span><div class="nx-sp"><div class="t">${tt}</div><div class="s" style="${k==='green'?'color:#347241;font-weight:600':k==='amber'?'color:#8a5a00;font-weight:600':''}">${s}</div></div></button>`).join('')}</div>
     <button class="nx-link" style="margin-top:12px" data-avail>${ic('clock')}Edit availability${ic('chev')}</button>
@@ -1569,7 +1569,7 @@ function changeTimeSheet(sel){
   el.addEventListener('click', e=>{
     const r = e.target.closest('[data-i]'); if (r){ changeTimeSheet(+r.dataset.i); return; }
     if (e.target.closest('[data-avail]')){ closeSheet(); go('home/schedule'); return; }
-    if (e.target.closest('[data-use]')){ closeSheet(); toast(sel===1 ? 'Heads up: that time clashes with your CS2040 tutorial' : sel===0 ? 'Keeping Sat 19 Sep, 2:00 to 5:00pm' : `Looking for sessions on ${opts[sel][0]}`, sel===1?'info':'clock'); }
+    if (e.target.closest('[data-use]')){ closeSheet(); toast(sel===1 ? 'Heads up: that time clashes with your online class' : sel===0 ? 'Keeping Sat 19 Sep, 2:00 to 5:00pm' : `Looking for sessions on ${opts[sel][0]}`, sel===1?'info':'clock'); }
   });
 }
 function askSheet(sid){

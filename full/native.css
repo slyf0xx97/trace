@@ -846,3 +846,6 @@ html.framed #screen:active,html.framed #screen *:active{cursor:url("data:image/s
 .nx-linked b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
 .nx-linked .nx-muted{display:block;font-size:12px}
 .nx-linked .nx-tag{font-size:11px;padding:3px 8px}
+
+/* ===== 2026-11-04: agenda times can be "5:05pm" ===== */
+.nx-agenda span{width:54px}
