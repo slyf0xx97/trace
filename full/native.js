@@ -77,7 +77,7 @@ const HOBBY_SEED = () => ({
     titles:['','Starter','Explorer','Practitioner','Creator','Virtuoso'], badgePrefix:'L', hours:67, wsCount:8,
     detect:{ icon:'image', title:'Vault upload detected', desc:'New artwork uploaded today after your ArtHaus workshop. Confirm it so the XP counts.', btn:'Confirm artwork', done:'Your artwork is logged under Digital Art and saved in your Vault.' },
     manual:{ kinds:[['Workshop',80],['Practice at home',40],['Finished a piece',120]] },
-    streak:{ title:'Creative streak', done:6, of:8, unit:'uploads', tag:'2 weeks left', next:'Your next beginner workshop is on Sat 26 Sep.', week:3, weeks:4 },
+    streak:{ title:'Creative streak', done:6, of:8, unit:'uploads', tag:'1 week left', next:'Your next beginner workshop is on Sat 26 Sep.', week:3, weeks:4 },
     badges:[ {n:'First Stroke',s:'Upload your first piece',i:'pen',rule:'art1'},{n:'Regular',s:'3 workshops attended',i:'palette',rule:'ws3'},{n:'Virtuoso',s:'Complete 10 pieces',i:'trophy',rule:'art10'},{n:'Streak Keeper',s:'8-week creative streak',i:'flame',rule:'streak'} ],
     milestones:[ {t:'City Lights series',s:'6 Vault works, a milestone',i:'star',d:'A six-piece series of night scenes, started after your second ArtHaus workshop. Trace grouped them because they share a theme and were uploaded within three weeks.'},{t:'ArtHaus beginner course',s:'3 workshops, workshop verified',i:'award',d:'ArtHaus Studio confirmed your attendance at all three beginner workshops. This counts as verified evidence in your Skills Transcript.'} ],
     skills:[ {n:'Composition',ev:4,cat:'creative',src:'ArtHaus workshop series',dims:{Creativity:1}}, {n:'Digital brush control',ev:3,cat:'knowledge',src:'3 workshops, 2 months',dims:{Mastery:1}}, {n:'Colour theory',ev:1,cat:'knowledge',src:'1 workshop',dims:{Creativity:.5,Mastery:.5}}, {n:'Creative confidence',ev:6,cat:'mastery',src:'6 Vault works shared',dims:{Discipline:.5,Creativity:.5}} ],
@@ -121,7 +121,7 @@ const FILE_SEED = () => [
   ['piano','Recital.mp4','video','u_recital.jpg',1,0,1],['piano','ABRSM_cert.pdf','pdf','u_cert.jpg',0,1,0],['piano','Sheet_music.pdf','pdf','u_sheet.jpg',0,0,0],['piano','Practice_log.pdf','pdf','c_practicelog.jpg',0,0,0],['piano','Recording.mp3','audio','c_recording.jpg',1,0,0],
   ['bball','TeamPhoto_P6.jpg','image','u_team.jpg',0,1,0],['bball','MVP_2022.jpg','image','u_mvp.jpg',0,1,0],['bball','Highlights.mp4','video','u_highlights.jpg',1,0,0],['bball','CCA_Cert.pdf','pdf','u_cert.jpg',0,1,0],['bball','Nationals.jpg','image','u_nationals.jpg',0,0,0]
 ].map((f,i)=>({ id:'f'+i, hobby:f[0], name:f[1], kind:f[2], src:IMG+f[3], isNew:!!f[4], pub:!!f[5], port:!!f[6],
-  ws: f[0]==='art' && f[4] ? 'w1' : null, date: f[4] ? '12 Sep 2026' : 'Aug 2026' }));
+  ws: f[0]==='art' && f[4] ? 'w1' : null, date: f[4] ? '19 Sep 2026' : 'Aug 2026' }));
 
 const KEY = 'trace-native-v1';
 let S = load();
@@ -129,7 +129,7 @@ function fresh(){
   const h = HOBBY_SEED();
   return { hobbies:h, order:['art','motion','piano','guitar','bball'], files:FILE_SEED(), logs:{art:false,piano:false,bball:false},
     seg:{}, sugg:false, posts:[], frame:'glo', radarOff:{}, pf:{ hobbies:{art:true,piano:true,bball:false}, sec:{matrix:true,endorse:true,work:true,miles:true,xp:false}, access:'view', purpose:null, endorse:true },
-    tailor:{ msgs:[], stage:0 }, nextId:100, autoNet:true, seedLiked:{} };
+    tailor:{ msgs:[], stage:0 }, nextId:100, autoNet:false, seedLiked:{} };
 }
 const IMGMAP = {team:'u_team',mvp:'u_mvp',highlights:'u_highlights',ccacert:'u_cert',cert:'u_cert',nationals:'u_nationals',sheet:'u_sheet',recital:'u_recital',process:'u_process',sketch:'c_sketch',workshop:'c_workshop',watercolour:'c_watercolour',portrait:'c_portrait',practicelog:'c_practicelog',recording:'c_recording'};
 function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.hobbies && s.files){
@@ -416,7 +416,7 @@ function pVault(v){
 function hobbyHead(h, backTo){
   const L = levelInfo(h);
   return `<div class="nx-hhead ${h.hdr?'':'plain'}" style="${h.hdr?`background-image:url('${IMG+h.hdr}')`:''}">${headDeco(h)}
-    <button class="nx-back back" data-act="back" data-to="${backTo||'p/hobbies'}">${BACK}${backTo&&backTo!=='p/hobbies'?'Back':'Back to Progress'}</button>
+    <button class="nx-back back" data-act="back" data-to="${backTo||'p/hobbies'}">${BACK}${!backTo||backTo==='p/hobbies'?'Back to Progress':/\/vault$/.test(backTo)?'Back to Vault':'Back'}</button>
     <div class="ring cg" style="${ring(L.pct,66,'#6ea862','rgba(255,255,255,.75)')}"><span class="in">${hobbyIcon(h)}</span><span class="lv">${L.label}</span></div>
     <div class="ttl"><b>${esc(h.name)}</b><span>${esc(subtitle(h))}</span></div></div>`;
 }
@@ -599,7 +599,7 @@ const onVault = k => t().state.cur === 'h/'+k+'/vault';
 
 /* ================= UPLOAD ONE ARTWORK ================= */
 let DRAFT = null;
-function newDraft(){ return { img: IMG+'v_paintbig.jpg', title:'Palette study', desc:'Mixing colours at my first ArtHaus workshop.', ws:'w1' }; }
+function newDraft(){ return { img: IMG+'v_paintbig.jpg', title:'Palette study', desc:'Mixing colours at the ArtHaus workshop.', ws:'w1' }; }
 function hUpload(v, k){
   const h = H(k); if (!DRAFT) DRAFT = newDraft();
   const w = h.workshops.find(x=>x.id===DRAFT.ws);
@@ -657,10 +657,10 @@ function hShare(v, k){
 /* ================= TRACE FEED POST ================= */
 function nPost(v, id){
   const p = S.posts.find(x=>x.id===id);
-  if (!p){ v.innerHTML = BACKROW('Back','p/vault') + '<h1 class="nx-h1">Post removed</h1><div class="nx-sub">This post was undone.</div></div>'; return; }
+  if (!p){ v.innerHTML = BACKROW('Back to Trace Vault','p/vault') + '<h1 class="nx-h1">Post removed</h1><div class="nx-sub">This post was undone.</div></div>'; return; }
   const fs = p.files.map(fid=>S.files.find(f=>f.id===fid)).filter(Boolean), h = H(p.hobby);
   const where = [p.dest.feed&&'Trace feed', p.dest.ig&&'Instagram', p.dest.pin&&'Pinterest'].filter(Boolean).join(', ');
-  v.innerHTML = BACKROW('Back', 'n/feed', 'Trace Network') + `<h1 class="nx-h1">Your post</h1><div class="nx-sub">Shared to ${esc(where)}.</div>
+  v.innerHTML = BACKROW('Back to Network', 'n/feed', 'Trace Network') + `<h1 class="nx-h1">Your post</h1><div class="nx-sub">Shared to ${esc(where)}.</div>
   <div class="nx-card" style="padding:0;overflow:hidden"><div class="nx-row" style="padding:14px 16px"><img class="nx-ava" src="${IMG}a_sarah.jpg" alt=""><div class="nx-sp"><div style="font-weight:700">Sarah Tan</div><div class="nx-muted">${esc(h.name)}, ${esc(p.ws||'From Vault')}, just now</div></div>${ic('dots').replace('<svg','<svg style="width:20px;height:20px;color:#8b98a6"')}</div>
     <div style="display:grid;grid-template-columns:${fs.length>1?'1fr 1fr':'1fr'};gap:2px">${fs.slice(0,4).map(f=>`<div style="aspect-ratio:1;background:#dfe7ef ${f.src?`url('${f.src}')`:''} center/cover;display:flex;align-items:center;justify-content:center;color:#3f5570">${f.src?'':ic(kindIcon(f.kind),'',1.6).replace('<svg','<svg style="width:40px;height:40px"')}</div>`).join('')}</div>
     <div style="padding:14px 16px"><p style="font-size:15px;line-height:1.45">${esc(p.cap)}</p>
@@ -757,7 +757,7 @@ function pPortfolio(v){
   const hsub = { art:`${L.cur?levelInfo(H('art')).cur.t:''}, ${d.arts} artworks`, piano:'ABRSM Grade 3, merit', bball:`CCA point guard, ${H('bball').xp} hours` };
   const secs = [['matrix','Skill Matrix','Mapped to SMU Graduate Learning Outcomes'],['endorse','Endorsements',`${d.ends.length} from an instructor and a peer`],['work','Best work',`${d.picks.length} Vault files you picked`],['miles','Milestones and certificates','Singpass-verified records'],['xp','XP and levels','Trace progress numbers']];
   const acc = {only:'Only you',view:'Anyone with the link can view',req:'Anyone with the link can view and request',invite:'Only people you invite'}[S.pf.access];
-  v.innerHTML = `<div class="nx-sky"></div>${skyDeco()}<div class="nx-wrap"><div class="nx-top"></div><div class="nx-hrow"><button class="nx-back" data-act="back" data-to="p/vault">${BACK}Back</button>${p?`<span class="nx-where">Tailored</span>`:''}</div>
+  v.innerHTML = `<div class="nx-sky"></div>${skyDeco()}<div class="nx-wrap"><div class="nx-top"></div><div class="nx-hrow"><button class="nx-back" data-act="back" data-to="p/vault">${BACK}Back to Trace Vault</button>${p?`<span class="nx-where">Tailored</span>`:''}</div>
   <h1 class="nx-h1">${p ? 'Tailored '+esc(d.fh.name)+' Portfolio' : 'Customise portfolio'}</h1>
   ${p ? `<div class="nx-sub">${/^[AEIOU]/i.test(PURPOSE[p].label)?'An':'A'} ${esc(PURPOSE[p].label)} portfolio shaped from Sarah's workshops, Vault uploads, skills and milestones.</div>` : ''}
   ${pfCard(d, L)}
@@ -915,7 +915,7 @@ function netPost(k, ids, cap){
   files.forEach(f=>{ p.prevPub[f.id] = f.pub; f.pub = true; f.netPost = p.id; });
   S.posts.unshift(p); save();
   [[2200,2,0],[5200,3,1],[9000,4,2]].forEach(([ms,l,c])=>setTimeout(()=>{ const q = S.posts.find(x=>x.id===p.id); if (!q) return; q.likes = l + (q.likes>l?q.likes-l:0); q.comments = Math.max(q.comments,c); save(); if (/^n\//.test(t().state.cur)) refresh(); }, ms));
-  setTimeout(()=>toast(`Posted to Trace Network`, 'users', { label:'Undo', fn:()=>{ unpost(p.id); toast('Removed from Trace Network', 'refresh'); } }), 700);
+  setTimeout(()=>toast(`Posted to Trace feed`, 'users', { label:'Undo', fn:()=>{ unpost(p.id); toast('Removed from Trace feed', 'refresh'); } }), 700);
   return p;
 }
 function defaultCap(k, files, w){
@@ -930,7 +930,7 @@ function unpost(id){
   S.posts = S.posts.filter(x=>x.id!==id); save(); refresh();
 }
 const SEEDFEED = [
-  { id:'s1', who:'Sarah Tan', av:'a_sarah.jpg', sub:'Instagram, 2 min ago', subIc:'ig', img:'c_sketch.jpg', text:'My first digital art workshop in ages: I finally started drawing again.', likes:18, comments:4 },
+  { id:'s1', who:'Sarah Tan', av:'a_sarah.jpg', sub:'Instagram, 2 min ago', subIc:'ig', img:'c_sketch.jpg', text:'My first digital art workshop in ages. I finally started drawing again.', likes:18, comments:4 },
   { id:'s2', who:'Pinterest', logo:'pin', sub:'Digital Art collection', img:'v_paintbig.jpg', text:"Trace added the artwork and process notes to Sarah's collection.", ok:'Shared, with your OK' },
   { id:'s3', who:'Emma', initial:'E', sub:'Instagram Story, via Trace', subIc:'ig', img:'c_portrait.jpg', text:'Look at my DRAWWINGGGG', likes:9, comments:1, story:true } ];
 function postCard(p){
@@ -1225,7 +1225,7 @@ const ACT = {
     S.files.unshift({ id, hobby:k, name:(DRAFT.title||'Untitled')+'.jpg', kind:'image', src:DRAFT.img, desc:DRAFT.desc, isNew:true, pub:false, port:false, ws:DRAFT.ws, date:DRAFT.ws==='w1'?'19 Sep 2026':TODAY, mine:true });
     if (DRAFT.blob) BLOBS[id] = DRAFT.blob;
     S.logs[k] = false; H(k).pending = DRAFT.ws ? 120 : 60; S.seg[k] = 'det'; incStreak(k, true); const cap = DRAFT.title; DRAFT = null; save();
-    go('h/'+k); setTimeout(()=>toast('Saved to Vault. Confirm it below so the XP counts.'), 300); setTimeout(()=>netPost(k, [id], 'New in '+H(k).name+': '+cap+'.'), 2600); },
+    go('h/'+k+'/vault'); setTimeout(()=>toast('Saved to your Vault. It stays private until you share it.', 'lock'), 300); setTimeout(()=>netPost(k, [id], 'New in '+H(k).name+': '+cap+'.'), 2600); },
   pick(el){ const k = hobbyOf(), { s } = shareState(k); keepCap(k); const id = el.dataset.f; s.sel = s.sel.includes(id) ? s.sel.filter(x=>x!==id) : s.sel.concat(id); refresh(); },
   dest(el){ const k = hobbyOf(), { s } = shareState(k); keepCap(k); s.dest[el.dataset.d] = !s.dest[el.dataset.d]; refresh(); },
   shareWs(){ const k = hobbyOf(), { s, fresh } = shareState(k); keepCap(k); const first = fresh.find(f=>s.sel.includes(f.id)) || fresh[0];
@@ -1450,7 +1450,7 @@ function hRewards(v){
   const c = credits(), cp = REWARDS[3], toCp = Math.max(0, cp.cost - c), cl = S.claimed||{};
   const recent = [...Object.keys(cl).map(k=>{ const r = REWARDS.find(x=>x.id===k); return ['award',`Claimed ${r.n}`,'Today',`-${r.cost} TC`]; }),
     ...(S.gained ? [['calendar','Booked a session','Today',`+${Math.round(S.gained/4)} TC`]] : []),
-    ['check','Attended a session','12 Sep, ArtHaus Studio','+120 TC'],['award','Claimed LifeSG voucher','10 Sep','-100 TC'],['upload','Uploaded artwork to Vault','8 Sep','+40 TC']];
+    ['check','Attended a session','19 Sep, ArtHaus Studio','+120 TC'],['award','Claimed LifeSG voucher','10 Sep','-100 TC'],['upload','Uploaded artwork to Vault','8 Sep','+40 TC']];
   v.innerHTML = BACKROW('Back to Home','home','Rewards') + `
   <div class="nx-card nx-row" style="gap:16px;margin-top:18px"><span class="nx-tcring" style="${ring(Math.min(1,c/cp.cost),0,'#3a6ea5','#dfe8f2')}"><span><b data-count="${c}">${fmt(c)}</b><small>TC</small></span></span>
     <div class="nx-sp"><div class="nx-label" style="margin:0 0 4px">Trace credits</div><div class="nx-h2" style="font-size:18px">${toCp?`${fmt(toCp)} TC to your SG Culture Pass top-up`:'You have enough for an SG Culture Pass top-up'}</div><span class="nx-tag" style="margin-top:8px">${ic('flame')}+160 this month</span></div></div>
@@ -1467,7 +1467,7 @@ function hRewards(v){
 
 let SCHV = 'day';
 function analyser(){
-  const bars = [['M',1,'busy'],['T',2],['W',.5,'busy'],['T',3],['F',2],['S',4,'top'],['S',3]];
+  const bars = [['M',1,'busy'],['T',2],['W',.5,'busy'],['T',3],['F',2],['S',3,'top'],['S',3]];
   const sat = [['1pm',''],['2pm','top'],['3pm','top'],['4pm','top'],['5pm','busy'],['6pm','busy']];
   return `<div class="nx-card nx-an"><div class="nx-row" style="align-items:flex-start">${lg(LOGO('l_gcal'))}<div class="nx-sp"><div class="nx-h2" style="font-size:18px">Schedule analyser</div><div class="nx-muted">Free afternoon hours, last 4 weeks</div></div><span class="nx-tag green">Live</span></div>
     <div class="an-bars">${bars.map(([d,h,k])=>`<div><i class="${k||''}" style="height:${(14+h*14)}px"></i><b>${d}</b><small>${h===.5?'&frac12;':h}h</small></div>`).join('')}</div>
