@@ -746,11 +746,6 @@ html:not(.framed) #mfab{zoom:var(--z)}
 html.framed #screen,html.framed #screen *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='13' fill='rgba(21,35,49,.28)' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16,pointer!important}
 html.framed #screen:active,html.framed #screen *:active{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='10' fill='rgba(21,35,49,.45)' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16,pointer!important}
 
-/* ===== 2026-11-03: public view hides prototype controls; add ?demo to the URL to show them ===== */
-html.framed:not(.demo) #bar{display:none}
-html.framed:not(.demo) #stage{padding-top:28px}
-html:not(.demo) #mfab{display:none!important}
-
 /* ===== 2026-11-03: coded Home, Trace Me, Rewards, Schedule, Trace Match, Platforms, Groups and Discover sheets (were Figma images) ===== */
 .nx-h2{display:block;font-family:Outfit;font-weight:600;font-size:22px;color:var(--ink);line-height:1.2}
 .nx-hello{width:100%;margin-top:14px;text-align:left;gap:14px;padding:14px 16px}
@@ -782,10 +777,10 @@ html:not(.demo) #mfab{display:none!important}
 .nx-rowbtn .nx-ico{background:none;position:relative}
 .nx-rowbtn sup{position:absolute;right:-2px;top:0;background:#2b5a87;color:#fff;border-radius:999px;font:700 10px "DM Sans";padding:2px 5px}
 .nx-homexp.flow{position:relative;left:auto;top:auto;width:auto;height:auto;z-index:auto;box-shadow:0 6px 18px rgba(21,35,49,.06)}
-.nx-ring{flex:none;width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--rc) calc(var(--p)*360deg),var(--rt) 0);display:flex;align-items:center;justify-content:center}
-.nx-ring>span{width:88px;height:88px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
-.nx-ring b{font-family:Outfit;font-weight:600;font-size:28px}
-.nx-ring small{font-size:12px;font-weight:700;color:#52606f;margin-top:3px}
+.nx-tcring{flex:none;width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--rc) calc(var(--p)*360deg),var(--rt) 0);display:flex;align-items:center;justify-content:center}
+.nx-tcring>span{width:88px;height:88px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.nx-tcring b{font-family:Outfit;font-weight:600;font-size:28px}
+.nx-tcring small{font-size:12px;font-weight:700;color:#52606f;margin-top:3px}
 .nx-earn{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:14px 8px;margin:0!important}
 .nx-earn b{font-family:Outfit;font-weight:600;font-size:19px;color:var(--blue-ink);margin-top:4px}
 .nx-earn small{font-size:12.5px;color:#52606f;line-height:1.3}
@@ -840,7 +835,7 @@ html:not(.demo) #mfab{display:none!important}
 .nx-spw{color:#e1251b;font-weight:800;letter-spacing:-.2px;margin-left:5px}
 .nx-send{flex:none;width:46px;height:46px;border-radius:50%;background:#152331;color:#fff;display:flex;align-items:center;justify-content:center}
 .nx-send svg{width:20px;height:20px}
-.nx-li>svg:last-child{color:#8b98a6;flex:none}
+.nx-chev{color:#8b98a6;flex:none}
 .nx-creds>div{gap:7px;padding:0 4px;min-width:0}
 .nx-creds .nx-lg{width:32px;height:32px}
 .nx-creds small{white-space:nowrap;font-size:11.5px}
