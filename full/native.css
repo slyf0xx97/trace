@@ -745,3 +745,103 @@ html:not(.framed) #mfab{zoom:var(--z)}
 /* ===== 2026-11-03: Figma-style touch cursor inside the phone frame (desktop only), smaller and darker while pressed ===== */
 html.framed #screen,html.framed #screen *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='13' fill='rgba(21,35,49,.28)' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16,pointer!important}
 html.framed #screen:active,html.framed #screen *:active{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='10' fill='rgba(21,35,49,.45)' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16,pointer!important}
+
+/* ===== 2026-11-03: public view hides prototype controls; add ?demo to the URL to show them ===== */
+html.framed:not(.demo) #bar{display:none}
+html.framed:not(.demo) #stage{padding-top:28px}
+html:not(.demo) #mfab{display:none!important}
+
+/* ===== 2026-11-03: coded Home, Trace Me, Rewards, Schedule, Trace Match, Platforms, Groups and Discover sheets (were Figma images) ===== */
+.nx-h2{display:block;font-family:Outfit;font-weight:600;font-size:22px;color:var(--ink);line-height:1.2}
+.nx-hello{width:100%;margin-top:14px;text-align:left;gap:14px;padding:14px 16px}
+.nx-hello>svg{color:#52606f;flex:none}
+.nx-hello .nx-muted{display:block;font-size:14.5px;margin-top:2px}
+.nx-ava.big{width:64px;height:64px;border:3px solid #fff;box-shadow:0 2px 8px rgba(21,35,49,.15)}
+.nx-lg{flex:none;width:44px;height:44px;border-radius:12px;border:1px solid #e3e9ef;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.nx-lg img{width:100%;height:100%;object-fit:cover}
+.nx-lg svg{width:24px;height:24px}
+.nx-lg.sm{width:36px;height:36px;border-radius:50%}
+.nx-lg.sm img{width:20px;height:17px;object-fit:contain}
+.nx-creds{display:flex;padding:12px 10px}
+.nx-creds>div{flex:1;display:flex;align-items:center;gap:8px;padding:0 6px}
+.nx-creds>div+div{border-left:1px solid #edf1f5}
+.nx-creds .nx-lg{width:36px;height:36px;border-radius:10px}
+.nx-creds small{display:block;font-size:12px;color:#52606f}
+.nx-creds b{font-family:Outfit;font-weight:600;font-size:19px}
+.nx-freet{display:inline-flex;align-items:center;gap:5px;color:#347241;font-weight:600;font-size:14px}
+.nx-freet svg{width:16px;height:16px}
+.nx-agenda{margin:10px 0 12px}
+.nx-agenda>div{display:flex;align-items:center;gap:14px;padding:6px 0;font-size:15.5px}
+.nx-agenda span{width:40px;color:#52606f}
+.nx-agenda i{width:9px;height:9px;border-radius:50%;background:#c9d1da;flex:none}
+.nx-agenda i.on{background:#417f4c}
+.nx-agenda i.free{background:none;border:1.5px solid #6ea862}
+.nx-agenda em{font-style:normal;color:#52606f}
+.nx-rowbtn{width:100%;display:flex;align-items:center;gap:12px;background:#e4eef8;border-radius:14px;padding:8px 14px 8px 10px;color:var(--blue-ink);font-family:Outfit;font-size:17px}
+.nx-rowbtn b{flex:1;text-align:left;font-weight:600}
+.nx-rowbtn .nx-ico{background:none;position:relative}
+.nx-rowbtn sup{position:absolute;right:-2px;top:0;background:#2b5a87;color:#fff;border-radius:999px;font:700 10px "DM Sans";padding:2px 5px}
+.nx-homexp.flow{position:relative;left:auto;top:auto;width:auto;height:auto;z-index:auto;box-shadow:0 6px 18px rgba(21,35,49,.06)}
+.nx-ring{flex:none;width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--rc) calc(var(--p)*360deg),var(--rt) 0);display:flex;align-items:center;justify-content:center}
+.nx-ring>span{width:88px;height:88px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.nx-ring b{font-family:Outfit;font-weight:600;font-size:28px}
+.nx-ring small{font-size:12px;font-weight:700;color:#52606f;margin-top:3px}
+.nx-earn{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:14px 8px;margin:0!important}
+.nx-earn b{font-family:Outfit;font-weight:600;font-size:19px;color:var(--blue-ink);margin-top:4px}
+.nx-earn small{font-size:12.5px;color:#52606f;line-height:1.3}
+.nx-ico.round{border-radius:50%}
+.nx-rgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.nx-rw{display:flex;flex-direction:column;margin:0!important;padding:14px}
+.nx-rw>b{font-size:16px;margin-top:10px}
+.nx-rw>small{font-size:13px;color:#52606f;margin:2px 0 12px}
+.nx-rw .nx-mini{width:100%;height:38px;margin-top:auto;justify-content:center;display:flex;align-items:center;gap:5px}
+.nx-rw .nx-mini svg{width:14px;height:14px}
+.nx-rw .nx-tbar{margin-top:auto}
+.nx-an .an-bars{display:flex;justify-content:space-between;align-items:flex-end;height:120px;margin-top:18px;padding:0 4px}
+.an-bars>div{display:flex;flex-direction:column;align-items:center;gap:4px;width:34px}
+.an-bars i,.an-sat i{display:block;width:100%;border-radius:9px;background:#bcdba4}
+.an-bars i.top,.an-sat i.top,.an-key i.top{background:#417f4c}
+.an-bars i.busy,.an-sat i.busy,.an-key i.busy{background:repeating-linear-gradient(135deg,#d7dee6 0 4px,#eef2f6 4px 8px)}
+.an-bars b{font-size:13px;margin-top:4px}.an-bars small{font-size:11.5px;color:#52606f}
+.an-sat{display:flex;gap:5px}
+.an-sat>div{flex:1;text-align:center}.an-sat i{height:16px;border-radius:6px}.an-sat small{font-size:11.5px;color:#52606f}
+.an-key{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:#52606f}
+.an-key span{display:inline-flex;align-items:center;gap:6px}
+.an-key i{display:inline-block;width:11px;height:11px;border-radius:3px;background:#bcdba4}
+.an-key i.dotg,.an-key i.dotb{border-radius:50%;width:8px;height:8px;background:#6ea862}.an-key i.dotb{background:#3a6ea5}
+.sc-list{display:flex;flex-direction:column;gap:10px}
+.sc-r{display:flex;gap:12px;align-items:stretch}
+.sc-r>span{width:52px;flex:none;color:#52606f;font-size:14px;padding-top:12px}
+.sc-list.wk .sc-r>span{width:58px;font-weight:600}
+.sc-ev{flex:1;background:#fff;border:1.5px solid #e3e9ef;border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.sc-list.wk .sc-ev{flex-direction:row;align-items:center;justify-content:space-between}
+.sc-ev b{font-size:15.5px}.sc-ev small{font-size:13.5px;color:#52606f}
+.sc-ev.free{background:none;border-style:dashed;border-color:#c9d3dd}.sc-ev.free b{font-weight:500;color:#52606f}
+.sc-ev.trace{background:#f1f7ee;border:2px solid #417f4c}
+.sc-ev.tall{min-height:120px}
+.sc-ev .nx-tag{align-self:flex-end;margin-bottom:-18px}
+.sc-month{padding:14px 10px}
+.sc-dow,.sc-days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.sc-dow span{font-size:12px;color:#52606f;padding-bottom:8px}
+.sc-days span{position:relative;height:42px;display:flex;align-items:center;justify-content:center;font-size:15px;border-radius:50%;margin:2px}
+.sc-days span i{position:absolute;bottom:5px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#6ea862}
+.sc-days span i.bk{background:#fff}
+.sc-days .sel{background:#417f4c;color:#fff;font-weight:700}
+.sc-days .free{box-shadow:inset 0 0 0 2px #6ea862;color:#347241;font-weight:700}
+.sc-days .today{box-shadow:inset 0 0 0 1.5px #152331;font-weight:700}
+.tm-l .nx-tag.grey{font-size:13px}
+.tm-dots{display:flex;gap:4px;flex-wrap:wrap;max-width:170px}
+.tm-dots i{width:9px;height:9px;border-radius:50%;background:#dfe6ee}.tm-dots i.on{background:#3a6ea5}
+.tm-join{height:42px;padding:0 24px;border-radius:999px;background:var(--blue);color:#fff;font:600 15px Outfit;box-shadow:0 3px 0 #2b5a87;display:inline-flex;align-items:center;gap:6px}
+.tm-join.done{background:#417f4c;box-shadow:0 3px 0 #2f6239}.tm-join svg{width:15px;height:15px}
+.nx-utabs{display:flex;border-bottom:1px solid #dfe5ec;margin-top:14px}
+.nx-utabs button{flex:1;height:44px;font-weight:600;font-size:15px;color:#52606f}
+.nx-utabs button.on{color:#152331;box-shadow:inset 0 -2.5px 0 #152331}
+.nx-spw{color:#e1251b;font-weight:800;letter-spacing:-.2px;margin-left:5px}
+.nx-send{flex:none;width:46px;height:46px;border-radius:50%;background:#152331;color:#fff;display:flex;align-items:center;justify-content:center}
+.nx-send svg{width:20px;height:20px}
+.nx-li>svg:last-child{color:#8b98a6;flex:none}
+.nx-creds>div{gap:7px;padding:0 4px;min-width:0}
+.nx-creds .nx-lg{width:32px;height:32px}
+.nx-creds small{white-space:nowrap;font-size:11.5px}
+.nx-spw{margin-left:-3px}

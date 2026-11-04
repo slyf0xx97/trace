@@ -200,10 +200,8 @@ if (new URLSearchParams(location.search).get('debug') === '1'){ state.hot = true
 /* ---------- start ---------- */
 fit();
 const first = idFromHash() || START;
-history.replaceState({ id:first, d:0 }, '', '#' + first.replace(':','-'));
+history.replaceState({ id:first, d:0 }, '', '#' + ((window.NATIVE && NATIVE.resolve(first)) || first.replace(':','-')));
 render(first, false);
-const qo = new URLSearchParams(location.search).get('o');   // ?o=3071-1095 opens that overlay on load
-if (qo && DATA.O[qo.replace('-',':')]) openOverlay(qo.replace('-',':'));
 addEventListener('load', ()=>{ fit(); if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('../sw.js').catch(()=>{}); });
 window.TRACE = { state, go, render, run, back, getY, setY };   // for testing
 })();

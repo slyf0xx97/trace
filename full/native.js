@@ -59,6 +59,7 @@ const P = {
   target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
   zap:'<path d="M13 2L3 14h9l-1 8 10-12h-9z"/>',
   search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v9H5v-9M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/>',
   calendar:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'
 };
 const ic = (n, cls='', sw=2) => `<svg class="${cls}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]||''}</svg>`;
@@ -68,19 +69,19 @@ const PIN = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#e600
 const MARK = '<img src="../assets/mark_lg.svg" alt="">';
 
 /* ---------------- seed data ---------------- */
-const TODAY = '28 Oct 2026';
+const TODAY = '17 Sep 2026';   // Thu, two days before the free Saturday (Sat 19 Sep)
 const HOBBY_SEED = () => ({
   art: { key:'art', name:'Digital Art', cat:'ARTS', icon:'palette', hdr:'hdr_art.jpg', unit:'xp', xp:1240, pending:120,
     levels:[{n:'1',t:'Level 1',s:'1 workshop',at:0},{n:'2',t:'Level 2',s:'3 workshops',at:1000},{n:'3',t:'Level 3',s:'6 workshops',at:1500},{n:'4',t:'Level 4',s:'9 workshops',at:2000},{n:'5',t:'Level 5',s:'Virtuoso',at:2600}],
     titles:['','Starter','Explorer','Practitioner','Creator','Virtuoso'], badgePrefix:'L', hours:67, wsCount:8,
-    detect:{ icon:'image', title:'Vault upload detected', desc:'New artwork uploaded today after your ArtHaus workshop. Confirm it so the XP counts.', btn:'Confirm artwork', done:'Your artwork is logged under Digital Art and saved in your Vault.' },
+    detect:{ icon:'image', title:'Vault upload detected', desc:'New artwork uploaded today from your ArtHaus workshop last Saturday. Confirm it so the XP counts.', btn:'Confirm artwork', done:'Your artwork is logged under Digital Art and saved in your Vault.' },
     manual:{ kinds:[['Workshop',80],['Practice at home',40],['Finished a piece',120]] },
-    streak:{ title:'Creative streak', done:6, of:8, unit:'uploads', tag:'2 weeks left', next:'Your next beginner workshop is on Sat 27 Sep.', week:3, weeks:4 },
+    streak:{ title:'Creative streak', done:6, of:8, unit:'uploads', tag:'2 weeks left', next:'Your next beginner workshop is on Sat 26 Sep.', week:3, weeks:4 },
     badges:[ {n:'First Stroke',s:'Upload your first piece',i:'pen',rule:'art1'},{n:'Regular',s:'3 workshops attended',i:'palette',rule:'ws3'},{n:'Virtuoso',s:'Complete 10 pieces',i:'trophy',rule:'art10'},{n:'Streak Keeper',s:'8-week creative streak',i:'flame',rule:'streak'} ],
     milestones:[ {t:'City Lights series',s:'6 Vault works, a milestone',i:'star',d:'A six-piece series of night scenes, started after your second ArtHaus workshop. Trace grouped them because they share a theme and were uploaded within three weeks.'},{t:'ArtHaus beginner course',s:'3 workshops, workshop verified',i:'award',d:'ArtHaus Studio confirmed your attendance at all three beginner workshops. This counts as verified evidence in your Skills Transcript.'} ],
     skills:[ {n:'Composition',ev:4,cat:'creative',src:'ArtHaus workshop series',dims:{Creativity:1}}, {n:'Digital brush control',ev:3,cat:'knowledge',src:'3 workshops, 2 months',dims:{Mastery:1}}, {n:'Colour theory',ev:1,cat:'knowledge',src:'1 workshop',dims:{Creativity:.5,Mastery:.5}}, {n:'Creative confidence',ev:6,cat:'mastery',src:'6 Vault works shared',dims:{Discipline:.5,Creativity:.5}} ],
     radar:{Creativity:.82,Discipline:.66,Communication:.55,Teamwork:.42,Leadership:.38,Mastery:.7},
-    workshops:[ {id:'w1',t:'Beginner digital-art workshop',s:'ArtHaus Studio, Sat 20 Sep, 2pm to 5pm',detected:true},{id:'w2',t:'Watercolour taster',s:'Community Arts Hub, Sun 21 Sep, 11am to 12:30pm'},{id:'w3',t:'Life drawing',s:'Telok Kurau Studios, Sat 13 Sep, 4:30pm'} ],
+    workshops:[ {id:'w1',t:'Beginner digital-art workshop',s:'ArtHaus Studio, Sat 12 Sep, 2pm to 5pm',detected:true},{id:'w2',t:'Watercolour taster',s:'Community Arts Hub, Sun 13 Sep, 11am to 12:30pm'},{id:'w3',t:'Life drawing',s:'Telok Kurau Studios, Sat 5 Sep, 4:30pm'} ],
     endorse:[ {id:'meiling',n:'Ms Mei Ling',r:'Instructor, ArtHaus Studio, 2026',a:'a_meiling.jpg',st:'none',q:'Sarah asks good questions and turns feedback into her next piece within a week.'}, {id:'ryan',n:'Ryan Koh',r:'Workshop partner, 2026',a:'a_ryan.jpg',st:'none',q:'Generous in group critiques and always shares her brush settings.'}, {id:'priya',n:'Priya, workshop instructor',r:'ArtHaus Studio',a:'a_priya.jpg',st:'received',q:'Picks up new techniques fast and always finishes what she starts.'}, {id:'marcus',n:'Marcus, Digital Art Circle',r:'Peer reviewer',a:'a_marcus.jpg',st:'received',q:'Gives thoughtful feedback in every group critique.'} ]
   },
   piano: { key:'piano', name:'Piano', cat:'MUSIC', icon:'piano', hdr:'hdr_piano.jpg', unit:'xp', xp:2150, pending:80,
@@ -93,7 +94,7 @@ const HOBBY_SEED = () => ({
     milestones:[ {t:'Grade 3, merit',s:'ABRSM, Aug 2026, verified',i:'award',d:'ABRSM result linked through your exam number. Verified, so it shows a tick on your transcript.'},{t:'First recital',s:'NAFA Keys, Dec 2025',i:'star',d:'You played two pieces at the NAFA Keys winter recital. The recording is in your Vault.'} ],
     skills:[ {n:'Practice discipline',ev:7,cat:'mastery',src:'9 practices this month',dims:{Discipline:1}}, {n:'Sight reading',ev:4,cat:'knowledge',src:'Piano, Grade 3',dims:{Mastery:1}}, {n:'Performance',ev:3,cat:'creative',src:'First recital',dims:{Creativity:.6,Communication:.4}}, {n:'Ensemble playing',ev:2,cat:'interpersonal',src:'Recital accompanist',dims:{Teamwork:1}} ],
     radar:{Creativity:.6,Discipline:.9,Communication:.5,Teamwork:.45,Leadership:.35,Mastery:.78},
-    workshops:[ {id:'p1',t:'Practice at NAFA Keys',s:'Bras Basah, today 6:00 to 7:00pm',detected:true},{id:'p2',t:'Lesson with Ms Priya Nair',s:'Tue 21 Oct, 5pm'} ],
+    workshops:[ {id:'p1',t:'Practice at NAFA Keys',s:'Bras Basah, today 6:00 to 7:00pm',detected:true},{id:'p2',t:'Lesson with Ms Priya Nair',s:'Tue 15 Sep, 5pm'} ],
     endorse:[ {id:'nair',n:'Ms Priya Nair',r:'Piano teacher, 2018 to 2026',a:'a_priyanair.jpg',st:'none',q:'Eight years of steady, careful practice. Sarah prepares for every lesson.'}, {id:'chloe',n:'Chloe Sim',r:'Recital accompanist, 2025',a:'a_chloe.jpg',st:'none',q:'Listens closely and adjusts her tempo to the group.'} ]
   },
   bball: { key:'bball', name:'Basketball', cat:'SPORTS', icon:'ball', hdr:'hdr_bball.jpg', unit:'hours', xp:34, pending:2,
@@ -119,7 +120,7 @@ const FILE_SEED = () => [
   ['piano','Recital.mp4','video','u_recital.jpg',1,0,1],['piano','ABRSM_cert.pdf','pdf','u_cert.jpg',0,1,0],['piano','Sheet_music.pdf','pdf','u_sheet.jpg',0,0,0],['piano','Practice_log.pdf','pdf','c_practicelog.jpg',0,0,0],['piano','Recording.mp3','audio','c_recording.jpg',1,0,0],
   ['bball','TeamPhoto_P6.jpg','image','u_team.jpg',0,1,0],['bball','MVP_2022.jpg','image','u_mvp.jpg',0,1,0],['bball','Highlights.mp4','video','u_highlights.jpg',1,0,0],['bball','CCA_Cert.pdf','pdf','u_cert.jpg',0,1,0],['bball','Nationals.jpg','image','u_nationals.jpg',0,0,0]
 ].map((f,i)=>({ id:'f'+i, hobby:f[0], name:f[1], kind:f[2], src:IMG+f[3], isNew:!!f[4], pub:!!f[5], port:!!f[6],
-  ws: f[0]==='art' && f[4] ? 'w1' : null, date: f[4] ? '20 Sep 2026' : 'Aug 2026' }));
+  ws: f[0]==='art' && f[4] ? 'w1' : null, date: f[4] ? '12 Sep 2026' : 'Aug 2026' }));
 
 const KEY = 'trace-native-v1';
 let S = load();
@@ -780,12 +781,12 @@ let PFSEEN = false;
 /* ---------- portfolio summary card and transcript (29 Oct) ---------- */
 const HCOL = { art:'#3a6ea5', piano:'#417f4c', bball:'#d9822b', motion:'#7a5bb5', guitar:'#b0466a' };
 const HMETA = {
-  art:  { org:'ArtHaus Studio', role:'Workshop participant', period:'Sep 2026 to now', start:19 },
+  art:  { org:'ArtHaus Studio', role:'Workshop participant', period:'Jul 2026 to now', start:19 },
   piano:{ org:'NAFA Keys, ABRSM', role:'Student and recital performer', period:'2018 to now', start:0 },
-  bball:{ org:'Blk 412 Regulars, school CCA', role:'Point guard', period:'2014 to 2020, back since Sep 2026', start:18 }
+  bball:{ org:'Blk 412 Regulars, school CCA', role:'Point guard', period:'2014 to 2020, back since Jul 2026', start:18 }
 };
 function srand(seed){ let s = seed; return ()=>(s = (s*9301+49297)%233280)/233280; }
-const DAY0 = Date.UTC(2026,8,1), SPAN = 122, TODAYD = 57; // 1 Sep to 31 Dec, today is 28 Oct
+const DAY0 = Date.UTC(2026,6,1), SPAN = 123, TODAYD = 78; // 1 Jul to 31 Oct, today is 17 Sep
 function journeyEvents(k){
   const h = H(k), m = HMETA[k] || { start:10 }, r = srand(k.length*977 + (h.wsCount||3)*31);
   const ev = [], n = Math.min(6, h.wsCount||4), a = m.start;
@@ -796,7 +797,7 @@ function journeyEvents(k){
   if (k==='bball') ev.push({ d:18, t:'ms', n:'Back on court' });
   if (k==='piano') ev.push({ d:51, t:'ms', n:'Grade 4 prep' });
   [8, 22, 39].forEach((o,i)=>{ if (TODAYD+o < SPAN-2) ev.push({ d:TODAYD+o + i*3, t:'next' }); });
-  if (k==='piano') ev.push({ d:103, t:'nextms', n:'Winter recital' });
+  if (k==='piano') ev.push({ d:115, t:'nextms', n:'NAFA Keys recital' });
   return ev.map(e=>({ ...e, d: Math.max(1, Math.min(SPAN-1, e.d)) }));
 }
 function weekBars(k){ const h = H(k), r = srand(h.name.length*131 + 7), hrs = h.unit==='hours' ? h.xp : h.hours; const w = 8; const raw = Array.from({length:w},(_,i)=>.35+r()*.65 + i*.04); const s = raw.reduce((a,b)=>a+b,0); return raw.map(x=>x/s*hrs*.45); }
@@ -807,7 +808,7 @@ function pfCard(d, L){
       const del = (.25 + li*.12 + e.d/SPAN*.9).toFixed(2);
       if (e.t==='ms' || e.t==='nextms') return `<i class="jr-ms ${e.t==='nextms'?'fut':''}" style="left:${x}%;--c:${c};animation-delay:${del}s" title="${esc(e.n)}">${ic('star','',2.4)}</i>`;
       return `<i class="jr-${e.t}" style="left:${x}%;--c:${c};animation-delay:${del}s"></i>`; }).join('')}</div></div>`; }).join('');
-  const months = ['Sep','Oct','Nov','Dec'];
+  const months = ['Jul','Aug','Sep','Oct'];
   const bars = (()=>{ const sums = Array(8).fill(0); inc.forEach(k=>weekBars(k).forEach((v,i)=>sums[i]+=v)); const mx = Math.max(...sums,1); return sums.map((v,i)=>`<i style="height:${(18+v/mx*82).toFixed(0)}%;animation-delay:${(.5+i*.06).toFixed(2)}s"></i>`).join(''); })();
   const works = S.files.filter(f=>inc.includes(f.hobby) && f.src && (f.kind==='image'||f.kind==='video'));
   const mos = works.slice(0,4).map(f=>`<span style="background-image:url('${f.src}')"></span>`).join('');
@@ -816,8 +817,8 @@ function pfCard(d, L){
   const ends = d.ends;
   const chips = inc.map(k=>{ const h = H(k), li = levelInfo(h); return `<span class="pf-hob" style="--c:${HCOL[k]||'#3a6ea5'}"><span class="cg mini" style="${ring(li.pct,26,HCOL[k]||'#3a6ea5','#e7edf3')}"><span class="in">${hobbyIcon(h)}</span></span><span><b>${esc(h.name)}</b><small>${esc(li.cur.t)}, ${fmt(h.xp)} ${unitXP(h)}</small></span></span>`; }).join('');
   return `<div class="nx-card pf-card">
-    <div class="pf-head"><span class="pf-av"><img src="${IMG}a_sarah.jpg" alt=""></span><div class="nx-sp"><div class="pf-name">Sarah Tan</div><div class="nx-muted">${inc.length ? inc.map(k=>esc(H(k).name)).join(' and ').replace(/ and (?=.* and )/g,', ') : 'No hobbies picked'}, Sep to Dec 2026</div></div><span class="pf-ver">${ic('check','',3)}Verified</span></div>
-    ${inc.length ? `<div class="jr" aria-label="Activity timeline from September to December">
+    <div class="pf-head"><span class="pf-av"><img src="${IMG}a_sarah.jpg" alt=""></span><div class="nx-sp"><div class="pf-name">Sarah Tan</div><div class="nx-muted">${inc.length ? inc.map(k=>esc(H(k).name)).join(' and ').replace(/ and (?=.* and )/g,', ') : 'No hobbies picked'}, Jul to Oct 2026</div></div><span class="pf-ver">${ic('check','',3)}Verified</span></div>
+    ${inc.length ? `<div class="jr" aria-label="Activity timeline from July to October">
       <div class="jr-months">${months.map(m=>`<span>${m}</span>`).join('')}</div>
       <div class="jr-body"><span class="jr-today" style="left:calc(64px + (100% - 64px) * ${(TODAYD/SPAN).toFixed(4)})"></span>${lanes}</div>
       <div class="jr-key"><span><i class="jr-ws k"></i>Sessions</span><span><i class="jr-up k"></i>Uploads</span><span><i class="jr-ms k">${ic('star','',2.4)}</i>Milestones</span><span><i class="jr-next k"></i>Booked</span><span><i class="jr-tk"></i>Today</span></div></div>` : ''}
@@ -852,11 +853,11 @@ function docHTML(){
   rows.sort((a,b)=>b.ev-a.ev);
   const A = attain(d), pips = (n,of=4)=>`<span class="tx-pips">${Array.from({length:of},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</span>`;
   const docNo = 'TRC-26-' + String(1040 + d.hours).padStart(4,'0') + '-ST';
-  const lead = d.inc.length ? `Sarah is a ${d.inc.map(k=>H(k).name.toLowerCase()).join(' and ').replace(/ and (?=.* and )/g,', ')} learner with ${d.hours} logged hours and ${d.ws} instructor-led sessions since September 2026.${d.strong.length?` Her strongest evidence is in ${esc(d.strong.slice(0,2).join(' and ').toLowerCase())}.`:''}${p?` This record is arranged for a ${esc(PURPOSE[p].label)}.`:''}` : 'No activities are included in this transcript yet.';
+  const lead = d.inc.length ? `Sarah is a ${d.inc.map(k=>H(k).name.toLowerCase()).join(' and ').replace(/ and (?=.* and )/g,', ')} learner with ${d.hours} logged hours and ${d.ws} instructor-led sessions since July 2026.${d.strong.length?` Her strongest evidence is in ${esc(d.strong.slice(0,2).join(' and ').toLowerCase())}.`:''}${p?` This record is arranged for a ${esc(PURPOSE[p].label)}.`:''}` : 'No activities are included in this transcript yet.';
   const pfor = p ? esc(PURPOSE[p].label).replace(/^./,c=>c.toUpperCase()) : 'General use';
   return `<div class="nx-doc tx">
     <div class="tx-band"><div class="tx-brand"><img src="../assets/mark_lg.svg" alt=""><span>trace</span></div><div class="tx-docno">Record no. ${docNo}</div></div>
-    <div class="tx-title"><div><h2>Skills and Co-Curricular Transcript</h2><div class="tx-sub">Issued ${TODAY}. Activities from 1 Sep 2026 to ${TODAY}.</div></div>
+    <div class="tx-title"><div><h2>Skills and Co-Curricular Transcript</h2><div class="tx-sub">Issued ${TODAY}. Activities from 1 Jul 2026 to ${TODAY}.</div></div>
       <svg class="tx-seal" viewBox="0 0 80 80" aria-label="Verified seal"><defs><path id="sealp" d="M40,40 m-29,0 a29,29 0 1,1 58,0 a29,29 0 1,1 -58,0"/></defs><circle cx="40" cy="40" r="37" fill="none" stroke="#1f4e79" stroke-width="1.5"/><circle cx="40" cy="40" r="22" fill="#1f4e79"/><text font-size="7.6" letter-spacing="1.6" fill="#1f4e79" font-family="DM Sans" font-weight="700"><textPath href="#sealp">VERIFIED BY TRACE WITH SINGPASS</textPath></text><path d="M31 40.5l6 6 12-13" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="tx-part">
       <div><span>Name</span><b>Sarah Tan</b></div><div><span>Trace ID</span><b>ST-0417-26</b></div>
@@ -956,8 +957,7 @@ function seedCard(p){
       :`<div class="nx-row" style="margin-top:10px;gap:16px;color:#3f5570;font-size:14px"><button style="${liked?'color:#d23e1b':''}" data-act="seedLike" data-p="${p.id}">${ic('heart').replace('<svg','<svg style="width:20px;height:20px'+(liked?';fill:#d23e1b':'')+'"')}</button>${ic('chat').replace('<svg','<svg style="width:19px;height:19px"')}<span>${p.story?'View story':(p.likes+(liked?1:0))+' likes, '+p.comments+' comments'}</span></div>`}</div>${p.story?`<div style="padding:0 0 16px">${img}</div>`:''}</div>`;
 }
 function nFeed(v){
-  v.innerHTML = TOP() + `<div class="nx-tabs" style="background:none;box-shadow:none;border-bottom:1px solid #dfe5ec;border-radius:0;padding:0;margin-top:14px">
-      <button class="on" style="border-radius:0;background:none;color:#152331;box-shadow:inset 0 -2.5px 0 #152331">Feed</button><button style="background:none" data-go="3071:1116">Platforms</button><button style="background:none" data-go="3071:1118">Groups</button></div>
+  v.innerHTML = TOP() + netTabs('n/feed') + `
     <div class="nx-card nx-row"><span class="nx-row" style="gap:2px">${PIN.replace('<svg','<svg style="width:22px;height:22px"')}${IG.replace('<svg','<svg style="width:22px;height:22px"')}</span><div class="nx-sp"><div style="font-weight:700">Pinterest + Instagram</div><div class="nx-muted">Ask before each share</div></div><span class="nx-tag green">${ic('check')}6 connected</span></div>
     <div class="nx-card nx-row"><span class="nx-ico green">${ic('users')}</span><div class="nx-sp"><div style="font-weight:700">Auto-share Vault uploads</div><div class="nx-muted">New uploads post to Trace Network only. Instagram and Pinterest still ask.</div></div><button class="nx-tog ${S.autoNet?'on':''}" role="switch" aria-checked="${S.autoNet}" aria-label="Auto-share Vault uploads" data-act="autoNet"><i></i></button></div>
     <div class="nx-gap"></div>
@@ -1136,7 +1136,7 @@ async function confirmLog(k){
   if (h.detect.photo){
     const files = await pickFiles('image/*', false, 'environment');
     if (files.length){ const th = await makeThumb(files[0]); const id = 'u'+(S.nextId++); BLOBS[id] = URL.createObjectURL(files[0]);
-      S.files.unshift({ id, hobby:k, name:'Blk412_team_'+TODAY.split(' ')[0]+'Oct.jpg', kind:'image', src:th, isNew:true, pub:false, port:false, ws:'b1', date:TODAY, mine:true }); setTimeout(()=>netPost(k, [id]), 2400); }
+      S.files.unshift({ id, hobby:k, name:'Blk412_team_'+TODAY.split(' ').slice(0,2).join('')+'.jpg', kind:'image', src:th, isNew:true, pub:false, port:false, ws:'b1', date:TODAY, mine:true }); setTimeout(()=>netPost(k, [id]), 2400); }
     else { toast('No photo taken. Try again when you are at the court.', 'camera'); return; }
   }
   const amt = h.pending; S.logs[k] = true; h.teamLogs = (h.teamLogs||6)+1;
@@ -1255,7 +1255,6 @@ const ACT = {
   print(){ let pd = $('#printdoc'); if (!pd){ pd = document.createElement('div'); pd.id = 'printdoc'; document.body.appendChild(pd); }
     pd.innerHTML = docHTML(); setTimeout(()=>window.print(), 300); },
   frame(el){ S.frame = el.value; save(); refresh(); },
-  filters(){ t().run(['o:3071:1095']); }, changeTime(){ t().run(['o:3071:1098']); }, askTrace(){ t().run(['o:3071:1101']); },
   allActs(){ S.dq=''; save(); refresh(); toast('Showing all Saturday activities', 'spark'); },
   msgOrg(el){ toast('Opens Telegram to message '+SX(el.dataset.s).org, 'chat'); },
   useCp(el){ S.useCp = S.useCp||{}; const id = el.dataset.s; S.useCp[id] = S.useCp[id] === false; save(); refresh(); },
@@ -1309,7 +1308,7 @@ function dDiscover(v){
   const head = `<div class="nx-tabs" style="margin-top:10px"><button class="on">Discover</button><button data-go="3071:1085">Trace Match</button></div>
     <div class="nx-row" style="gap:8px"><label class="nx-search">${ic('search')}<input id="dq" placeholder="Search Saturday activities" value="${esc(S.dq||'')}" aria-label="Search activities"></label><button class="nx-filt" data-act="filters">Filters <span>2</span></button></div>
     <div class="nx-row" style="gap:8px;margin:12px 0"><button class="nx-pill sm on">For you</button><button class="nx-pill sm" data-act="allActs">All activities</button><span class="nx-sp"></span><button class="nx-link" data-act="filters">Edit interests</button></div>
-    <div class="nx-free"><span class="dot"></span><b>Sat 20 Sep, 2 to 5pm free</b><span class="nx-sp"></span><button class="nx-mini" style="background:#fff;border-color:#d9e6d4;box-shadow:none;color:#2f6239" data-act="changeTime">${ic('clock')}Change time</button></div>`;
+    <div class="nx-free"><span class="dot"></span><b>Sat 19 Sep, 2 to 5pm free</b><span class="nx-sp"></span><button class="nx-mini" style="background:#fff;border-color:#d9e6d4;box-shadow:none;color:#2f6239" data-act="changeTime">${ic('clock')}Change time</button></div>`;
   const q = (S.dq||'').toLowerCase().trim();
   const list = SESS.filter(x=>!q || (x.name+' '+x.org+' '+x.tags.join(' ')).toLowerCase().includes(q));
   const body = list.length ? list.map(x=>sessCard(x)).join('') : `<div class="nx-card" style="text-align:center" ><b>No sessions match "${esc(q)}"</b><div class="nx-muted">Try another word, or clear the search.</div></div>`;
@@ -1321,7 +1320,7 @@ function sDetail(v, id){
   const x = SX(id), booked = (S.bookings||{})[id];
   v.innerHTML = sTop(x) + `<div class="nx-label" style="margin:16px 0 2px">${esc(x.org.toUpperCase())}</div><h1 class="nx-h1" style="margin-top:0">${esc(x.name)}</h1>
   <div class="nx-card" style="padding:0;overflow:hidden"><div style="height:150px;background:#dfe7ef url('${IMG+x.img}') center/cover"></div>
-    <div class="nx-li"><span class="nx-ico">${ic('clock')}</span><div class="nx-sp"><div class="t">Sat 20 Sep, ${esc(x.start)} to ${esc(x.end)}</div><div class="s">${x.hours} hours, ends ${esc(x.end)}</div></div></div>
+    <div class="nx-li"><span class="nx-ico">${ic('clock')}</span><div class="nx-sp"><div class="t">Sat 19 Sep, ${esc(x.start)} to ${esc(x.end)}</div><div class="s">${x.hours} hours, ends ${esc(x.end)}</div></div></div>
     <div class="nx-li"><span class="nx-ico">${ic('pin')}</span><div class="nx-sp"><div class="t">${esc(x.org)}</div><div class="s">${esc(x.walk)}</div></div></div></div>
   <div class="nx-label">What's included</div>
   <div class="nx-list">${x.inc.map(([t,s])=>`<div class="nx-li"><span class="nx-ico">${ic('check')}</span><div class="nx-sp"><div class="t">${esc(t)}</div><div class="s">${esc(s)}</div></div></div>`).join('')}</div>
@@ -1339,7 +1338,7 @@ function sReview(v, id){
   const x = SX(id);
   v.innerHTML = BACKROW('Back to details', 's/'+id, 'Booking') + steps(2) + `<div class="nx-label" style="margin:14px 0 2px">Step 2 of 4</div><h1 class="nx-h1" style="margin-top:0;font-size:26px">Review your booking</h1>
   <div class="nx-sub">Nothing is charged and nothing is added to your calendar yet.</div>
-  <div class="nx-list">${[[`<span class="nx-ava" style="border-radius:10px;background:url('${IMG+x.img}') center/cover"></span>`,'Activity',x.name,x.org],[`<span class="nx-ico">${ic('calendar')}</span>`,'Date and time',`Sat 20 Sep, ${x.start} to ${x.end}`,`${x.hours} hours`],[`<span class="nx-ico">${ic('pin')}</span>`,'Location',x.org,x.walk],[`<span class="nx-ico">${ic('check')}</span>`,'Included',x.inc[0][0],'No membership, no materials to buy'],[x.cp?CP.replace('20px','34px').replace('20px','34px'):`<span class="nx-ico">${ic('info')}</span>`,'Price','$'+x.price,x.cp?'SG Culture Pass credit can cover it. You choose on the next step.':'Pay at the studio. Not covered by Culture Pass credit.']]
+  <div class="nx-list">${[[`<span class="nx-ava" style="border-radius:10px;background:url('${IMG+x.img}') center/cover"></span>`,'Activity',x.name,x.org],[`<span class="nx-ico">${ic('calendar')}</span>`,'Date and time',`Sat 19 Sep, ${x.start} to ${x.end}`,`${x.hours} hours`],[`<span class="nx-ico">${ic('pin')}</span>`,'Location',x.org,x.walk],[`<span class="nx-ico">${ic('check')}</span>`,'Included',x.inc[0][0],'No membership, no materials to buy'],[x.cp?CP.replace('20px','34px').replace('20px','34px'):`<span class="nx-ico">${ic('info')}</span>`,'Price','$'+x.price,x.cp?'SG Culture Pass credit can cover it. You choose on the next step.':'Pay at the studio. Not covered by Culture Pass credit.']]
     .map(([ico,l,t,s])=>`<div class="nx-li">${ico}<div class="nx-sp"><div class="nx-muted" style="font-size:12px">${l}</div><div class="t">${esc(t)}</div><div class="s">${esc(s)}</div></div></div>`).join('')}</div>
   <div class="nx-alert blue" style="margin-top:14px">${ic('info')}<span><b>Cancellation</b><br>Cancel free up to 4 hours before. Google Calendar is updated after you confirm.</span></div>
   <div style="margin-top:16px"><button class="nx-btn" data-go="s/${id}/credits">Continue to credits</button></div>
@@ -1372,7 +1371,7 @@ function confirmBook(id){
   }
   S.bookings = S.bookings||{}; S.bookings[id] = { at:Date.now(), cp: x.cp && (S.useCp||{})[id] !== false }; S.gained = (S.gained||0) + 120; save();
   const el = sheet(steps(5) + `<div class="nx-row" style="margin-top:12px"><span class="nx-ico" style="width:46px;height:46px;border-radius:50%;background:#417f4c;color:#fff">${ic('check','',3)}</span><div><h3 style="margin:0">You're booked</h3><div class="nx-muted">${esc(x.name)}, ${esc(x.org)}</div></div></div>
-    <div class="nx-list" style="border:1.5px solid #e3e9ef;box-shadow:none;margin-top:14px"><div class="nx-li"><span class="nx-ico">${ic('clock')}</span><div class="nx-sp"><div class="t">Sat 20 Sep, ${esc(x.start)} to ${esc(x.end)}</div><div class="s">${esc(x.walk)}</div></div></div>
+    <div class="nx-list" style="border:1.5px solid #e3e9ef;box-shadow:none;margin-top:14px"><div class="nx-li"><span class="nx-ico">${ic('clock')}</span><div class="nx-sp"><div class="t">Sat 19 Sep, ${esc(x.start)} to ${esc(x.end)}</div><div class="s">${esc(x.walk)}</div></div></div>
       <div class="nx-li"><span class="nx-ico">${ic('award')}</span><div class="nx-sp"><div class="t">Paid $${S.bookings[id].cp?0:x.price}</div><div class="s">${S.bookings[id].cp?`$${x.price} of SG Culture Pass credit used`:'Pay at the studio'}</div></div></div></div>
     <div class="nx-alert green" style="margin-top:12px">${ic('calendar')}<span><b>Added to Google Calendar.</b> Nothing else in your calendar was changed.</span><button class="u" data-undo>Undo</button></div>
     <div class="nx-btns" style="margin-top:16px"><button class="nx-btn ghost" data-done>Done</button><button class="nx-btn" data-sched>View in Schedule</button></div>`, { locked:true, confetti:true });
@@ -1395,18 +1394,266 @@ function clearHead(view){
   });
 }
 
+/* ================= HOME, TRACE ME, REWARDS, SCHEDULE, TRACE MATCH, PLATFORMS, GROUPS (3 Nov: coded, were Figma images) ================= */
+const LOGO = n => `<img src="${IMG}${n}.jpg" alt="">`;
+const CPLOGO = '<img src="../assets/logo_culturepass.png" alt="">';
+const REWARDS = [
+  { id:'lifesg', n:'LifeSG', s:'$1 voucher', cost:100, logo:LOGO('l_lifesg') },
+  { id:'h365', n:'Healthy 365', s:'50 Healthpoints', cost:100, logo:LOGO('l_healthy365') },
+  { id:'activesg', n:'ActiveSG', s:'$5 of ActiveSG credits', cost:220, logo:LOGO('l_activesg') },
+  { id:'cp', n:'SG Culture Pass', s:'$10 top-up', cost:900, logo:CPLOGO } ];
+function credits(){ const spent = Object.keys(S.claimed||{}).reduce((a,k)=>a+((REWARDS.find(r=>r.id===k)||{}).cost||0),0); return 820 + Math.round((S.gained||0)/4) - spent; }
+function cpBalance(){ return 100 - Object.entries(S.bookings||{}).filter(([,b])=>b.cp).reduce((a,[id])=>a+(SX(id)?SX(id).price:0),0); }
+function satBooking(){ const id = Object.keys(S.bookings||{}).find(SX); return id ? SX(id) : null; }
+const lg = x => `<span class="nx-lg">${x}</span>`;
+const acRow = ([logo,n,s,on,key]) => `<div class="nx-li">${lg(logo)}<div class="nx-sp"><div class="t">${n}</div><div class="s">${s}</div></div>${on?`<span class="nx-tag green">${ic('check')}Connected</span>`:`<button class="nx-mini" data-act="connect" data-k="${key}">Connect</button>`}</div>`;
+const accounts = sub => { const st = !!(S.conn||{}).strava; return [[IG,'Instagram','18 posts, 2019 to 2026',true],[PIN,'Pinterest','31 pieces across 2 boards',true],[LOGO('l_linkedin'),'LinkedIn','Skills and endorsements synced',true],[LOGO('l_strava'),'Strava',st?'Runs and rides are logged as sessions':sub,st,'strava']]; };
+
+function hHome(v){
+  const b = satBooking();
+  v.innerHTML = TOP() + `
+  <button class="nx-card nx-row nx-hello" data-go="home/me"><img class="nx-ava big" src="${IMG}a_sarah.jpg" alt=""><span class="nx-sp"><span class="nx-h2">Hey Sarah</span><span class="nx-muted">${b?`You're booked for Saturday at ${esc(b.org)}.`:'Your Saturday afternoon is open.'}</span></span>${ic('chev')}</button>
+  <div class="nx-label">Your credits</div>
+  <div class="nx-card nx-creds">${[[CPLOGO,'Culture Pass','$'+cpBalance()],[LOGO('l_activesg'),'ActiveSG','$100'],[LOGO('l_lifesg'),'LifeSG','$50']].map(([l,n,a])=>`<div>${lg(l)}<span><small>${n}</small><b>${a}</b></span></div>`).join('')}</div>
+  <div class="nx-label">This weekend</div>
+  <div class="nx-card">
+    <div class="nx-row" style="justify-content:space-between"><span class="nx-h2" style="font-size:19px">Saturday 19 Sep</span><span class="nx-freet">${ic('clock')}${b?'booked 2 to 5pm':'free 2 to 5pm'}</span></div>
+    <div class="nx-agenda">${b?`<div><span>2pm</span><i class="on"></i><b>${esc(b.name)}</b></div>`:''}<div><span>5pm</span><i></i><b>CS2040 tutorial</b></div><div><span>6pm</span><i></i><b>Dinner, hall</b></div><div><span>7pm</span><i class="free"></i><em>Open: no events</em></div></div>
+    <button class="nx-rowbtn" data-go="home/schedule"><span class="nx-ico">${ic('calendar')}${b?'<sup>+1</sup>':''}</span><b>Open schedule</b>${ic('chev')}</button></div>
+  <div class="nx-label">Your XP</div><div id="hxpslot"></div>
+  <div class="nx-card" style="margin-top:14px"><div class="nx-h2" style="font-size:18px;margin-bottom:4px">Trace Credits History</div>
+    ${[['calendar','Attend a booked session','+120'],['upload','Upload artwork to your Vault','+40'],['award','Reach a new level in a hobby','+250']].map(([i,tt,p])=>`<div class="nx-row" style="padding:7px 0"><span class="nx-ico">${ic(i)}</span><span class="nx-sp" style="font-size:15px">${tt}</span><span class="nx-tag green">${p}</span></div>`).join('')}</div>
+  <div style="margin-top:14px"><button class="nx-btn" data-go="home/rewards">${ic('gift')}Rewards</button></div></div>`;
+  $('#hxpslot', v).appendChild(homeXPCard(true));
+}
+
+function hMe(v){
+  const sh = S.share||{};
+  v.innerHTML = BACKROW('Back to Home','home','Trace Me') + `
+  <div class="nx-card nx-row nx-hello"><img class="nx-ava big" src="${IMG}a_sarah.jpg" alt=""><span class="nx-sp"><span class="nx-h2">Sarah Tan</span><span class="nx-muted">Member since 2026, Level 4 Regular</span></span></div>
+  <div class="nx-card" style="margin-top:14px">${S.sp
+    ? `<div class="nx-row"><span class="nx-ico green">${ic('check')}</span><div class="nx-sp"><div style="font-weight:700">Singpass linked</div><div class="nx-muted">Your credits, certificates and CCA records sync each week.</div></div></div>`
+    : `<div style="font-weight:700;font-size:16px">Link your Singpass</div><div class="nx-muted" style="margin:2px 0 12px">Sync your credits, certificates and CCA records</div><button class="nx-btn ghost" data-act="singpass">Continue with <span class="nx-spw">singpass</span></button>`}</div>
+  <div class="nx-label">Linked accounts</div>
+  <div class="nx-list">${accounts('Not connected').map(acRow).join('')}</div>
+  <div class="nx-label">Settings</div>
+  <div class="nx-list">${[[lg(LOGO('l_gcal')),'Calendar access','Google Calendar, read and add events','home/schedule'],[`<span class="nx-ico">${ic('clock')}</span>`,'Notifications','One session suggestion at a time',''],[`<span class="nx-ico">${ic('link')}</span>`,'Sharing settings',sh.preview===false?'Posts go out without a preview':'Nothing is posted without a preview','n/platforms'],[`<span class="nx-ico">${ic('file')}</span>`,'Data and downloads','Export or delete your record','p/transcript']]
+    .map(([i,tt,s,to])=>`<button class="nx-li" ${to?`data-go="${to}"`:'data-act="notif"'}>${i}<div class="nx-sp"><div class="t">${tt}</div><div class="s">${s}</div></div>${ic('chev')}</button>`).join('')}</div>
+  <div style="margin-top:16px"><button class="nx-btn ghost" data-act="signOut">Sign out</button></div></div>`;
+}
+
+function hRewards(v){
+  const c = credits(), cp = REWARDS[3], toCp = Math.max(0, cp.cost - c), cl = S.claimed||{};
+  const recent = [...Object.keys(cl).map(k=>{ const r = REWARDS.find(x=>x.id===k); return ['award',`Claimed ${r.n}`,'Today',`-${r.cost} TC`]; }),
+    ...(S.gained ? [['calendar','Booked a session','Today',`+${Math.round(S.gained/4)} TC`]] : []),
+    ['check','Attended a session','12 Sep, ArtHaus Studio','+120 TC'],['award','Claimed LifeSG voucher','10 Sep','-100 TC'],['upload','Uploaded artwork to Vault','8 Sep','+40 TC']];
+  v.innerHTML = BACKROW('Back to Home','home','Rewards') + `
+  <div class="nx-card nx-row" style="gap:16px"><span class="nx-ring" style="${ring(Math.min(1,c/cp.cost),0,'#3a6ea5','#dfe8f2')}"><span><b data-count="${c}">${fmt(c)}</b><small>TC</small></span></span>
+    <div class="nx-sp"><div class="nx-label" style="margin:0 0 4px">Trace credits</div><div class="nx-h2" style="font-size:18px">${toCp?`${fmt(toCp)} TC to your SG Culture Pass top-up`:'You have enough for an SG Culture Pass top-up'}</div><span class="nx-tag" style="margin-top:8px">${ic('flame')}+160 this month</span></div></div>
+  <div class="nx-label">Ways to earn</div>
+  <div class="nx-grid">${[['check','+120','Attend a session'],['upload','+40','Upload to Vault'],['flame','+60','Keep a weekly streak']].map(([i,p,tt])=>`<div class="nx-card nx-earn"><span class="nx-ico round">${ic(i)}</span><b>${p}</b><small>${tt}</small></div>`).join('')}</div>
+  <div class="nx-label">Rewards for you</div>
+  <div class="nx-rgrid">${REWARDS.map(r=>{ const done = !!cl[r.id], can = c >= r.cost;
+    return `<div class="nx-card nx-rw"><div class="nx-row" style="justify-content:space-between;align-items:flex-start">${lg(r.logo)}<span class="nx-tag grey">${r.cost} TC</span></div><b>${r.n}</b><small>${r.s}</small>
+      ${done ? `<button class="nx-mini done" disabled>${ic('check')}Claimed</button>` : can ? `<button class="nx-mini" data-act="claim" data-id="${r.id}">Claim</button>`
+        : `<div class="nx-tbar"><i style="left:0;width:${(c/r.cost*100).toFixed(0)}%;background:#6ea862"></i></div><small style="margin-top:6px">${fmt(r.cost-c)} TC to go</small>`}</div>`; }).join('')}</div>
+  <div class="nx-label">Recent</div>
+  <div class="nx-list">${recent.map(([i,tt,s,p])=>`<div class="nx-li"><span class="nx-ico">${ic(i)}</span><div class="nx-sp"><div class="t">${tt}</div><div class="s">${s}</div></div><span class="nx-tag">${p}</span></div>`).join('')}</div></div>`;
+}
+
+let SCHV = 'day';
+function analyser(){
+  const bars = [['M',1,'busy'],['T',2],['W',.5,'busy'],['T',3],['F',2],['S',4,'top'],['S',3]];
+  const sat = [['1pm',''],['2pm','top'],['3pm','top'],['4pm','top'],['5pm','busy'],['6pm','busy']];
+  return `<div class="nx-card nx-an"><div class="nx-row" style="align-items:flex-start">${lg(LOGO('l_gcal'))}<div class="nx-sp"><div class="nx-h2" style="font-size:18px">Schedule analyser</div><div class="nx-muted">Free afternoon hours, last 4 weeks</div></div><span class="nx-tag green">Live</span></div>
+    <div class="an-bars">${bars.map(([d,h,k])=>`<div><i class="${k||''}" style="height:${(14+h*14)}px"></i><b>${d}</b><small>${h===.5?'&frac12;':h}h</small></div>`).join('')}</div>
+    <div class="nx-label" style="margin:16px 0 8px">Saturday afternoons</div>
+    <div class="an-sat">${sat.map(([tt,k])=>`<div><i class="${k}"></i><small>${tt}</small></div>`).join('')}</div>
+    <div class="an-key"><span><i class="top"></i>Usually free</span><span><i></i>Sometimes free</span><span><i class="busy"></i>Likely busy</span></div>
+    <p class="nx-muted" style="font-size:14px;margin-top:10px"><b style="color:#347241">Sat 2 to 5pm is usually free</b> (3 of the last 4). <b style="color:#152331">Wed 5 to 7pm is likely busy</b> with CS2040. Trace re-checks each morning.</p></div>`;
+}
+function hSchedule(v){
+  const b = satBooking();
+  const tabs = `<div class="nx-tabs" style="margin-top:14px">${['day','week','month'].map(k=>`<button class="${SCHV===k?'on':''}" data-act="schv" data-v="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div>`;
+  let body;
+  if (SCHV==='day'){
+    const rows = [['1pm','Family Time','Home'], b ? ['2pm',b.name,`${b.org}, ${b.short}`,'trace'] : ['2pm','Free 2 to 5pm','Nothing booked yet','free'], ['5pm','CS2040 tutorial','SoC TR3'], ['6pm','Dinner, hall','']];
+    body = `<div class="nx-label" style="margin-top:4px">Saturday 19 Sep</div><div class="sc-list">${rows.map(([tt,n,s,k])=>`<div class="sc-r"><span>${tt}</span><div class="sc-ev ${k||''} ${k==='trace'?'tall':''}">${k==='trace'?'<span class="nx-tag green">Added by Trace</span>':''}<b>${esc(n)}</b>${s?`<small>${esc(s)}</small>`:''}${k==='free'?`<button class="nx-link" data-go="d/discover" style="margin-top:6px">Find something to do${ic('chev')}</button>`:''}</div></div>`).join('')}</div>`;
+  } else if (SCHV==='week'){
+    const rows = [['Mon 14','Piano practice, NAFA Keys: 6pm'],['Tue 15','Piano lesson, Ms Priya Nair: 5pm'],['Wed 16','CS2040 tutorial: 5pm'],['Thu 17','Free 7 to 9pm','free','Today'],['Fri 18','Nothing booked','free'],['Sat 19', b?`${b.name}: 2pm`:'Free 2 to 5pm', b?'trace':'free'],['Sun 20','Piano recital practice: 4pm']];
+    body = `<div class="nx-label" style="margin-top:4px">14 to 20 September</div><div class="sc-list wk">${rows.map(([d,n,k,tag])=>`<div class="sc-r"><span>${d}</span><div class="sc-ev ${k||''}"><b>${esc(n)}</b>${tag?`<span class="nx-tag dark">${tag}</span>`:''}</div></div>`).join('')}</div>`;
+  } else {
+    const practice = [1,3,5,8,10,12,14,15], first = new Date(Date.UTC(2026,8,1)).getUTCDay();
+    const cells = [...Array(first).fill(0), ...Array.from({length:30},(_,i)=>i+1)];
+    body = `<div class="nx-label" style="margin-top:4px">September 2026</div><div class="nx-card sc-month"><div class="sc-dow">${['S','M','T','W','T','F','S'].map(d=>`<span>${d}</span>`).join('')}</div>
+      <div class="sc-days">${cells.map(d=>!d?'<span></span>':`<span class="${d===19?(b?'sel':'free'):''} ${d===17?'today':''}">${d}${practice.includes(d)?'<i></i>':d===19&&b?'<i class="bk"></i>':''}</span>`).join('')}</div>
+      <div class="an-key" style="justify-content:center"><span><i class="dotg"></i>Practice logged</span><span><i class="dotb"></i>Session booked</span></div></div>
+      <div class="nx-muted" style="margin:10px 2px 0;font-size:14px">${practice.length} practices logged in September, ${b?'1 session':'no sessions'} booked.</div>`;
+  }
+  v.innerHTML = BACKROW('Back to Home','home','Schedule') + tabs + body + `<div class="nx-gap"></div>` + analyser() + '</div>';
+}
+
+/* ---------- Trace Match ---------- */
+const LOBBY = [
+  { id:'bb', n:'Basketball pickup', host:'Blk 412 Regulars', i:'ball', cat:'Sports', act:'Basketball', when:'Fri 6:30pm', km:.8, lvl:'All levels', have:5, cap:8 },
+  { id:'pb', n:'Pickleball doubles', host:'Toa Payoh Picklers', i:'users', cat:'Sports', act:'Pickleball', when:'Sun 9:00am', km:1.2, lvl:'Beginner friendly', have:6, cap:12 },
+  { id:'ld', n:'Life drawing jam', host:'Telok Kurau Sketchers', i:'pen', cat:'Arts', act:'Life drawing', when:'Sat 4:30pm', km:2.8, lvl:'All levels', have:10, cap:12 } ];
+const MINE = { id:'mine', n:'Basketball pickup', host:'you', i:'ball', cat:'Sports', act:'Basketball', when:'Fri 25 Sep, 6:30pm', km:.8, lvl:'All levels', have:1, cap:8 };
+const TMGROUPS = { Sports:['Basketball','Pickleball','Badminton','Running','Football'], Arts:['Digital art','Life drawing','Pottery','Photography'], Music:['Piano','Guitar','Ukulele'] };
+const TMF0 = () => ({ act:['Basketball','Pickleball','Life drawing'], km:'3 km', when:'This week', lvl:'All' });
+let TMCAT = 'All', TMF = null;
+function lobbies(f){
+  f = f || TMF || TMF0(); const max = { '1 km':1, '3 km':3, '5 km':5 }[f.km] || 99;
+  return [...(S.hosted?[MINE]:[]), ...LOBBY].filter(l => l.id==='mine' || ((TMCAT==='All'||l.cat===TMCAT) && (!f.act.length || f.act.includes(l.act)) && (S.loc===false || l.km <= max)));
+}
+function lobbyCard(l){
+  const j = !!(S.joined||{})[l.id] || l.id==='mine', n = l.have + ((S.joined||{})[l.id] ? 1 : 0), left = l.cap - n;
+  const [tc, tt] = l.id==='mine' ? ['dark','Your lobby'] : left<=2 ? ['amber', left?`${left} spot${left>1?'s':''} left`:'Full'] : n/l.cap>=.6 ? ['amber','Filling fast'] : ['green','Open'];
+  return `<div class="nx-card tm-l"><div class="nx-row" style="align-items:flex-start"><span class="nx-ico">${ic(l.i)}</span><div class="nx-sp"><div class="nx-h2" style="font-size:18px">${esc(l.n)}</div><div class="nx-muted" style="font-size:14px">Hosted by ${esc(l.host)}</div></div><span class="nx-tag ${tc}">${tt}</span></div>
+    <div class="nx-row" style="gap:6px;margin:12px 0;flex-wrap:wrap">${[l.when, l.km+' km', l.lvl].map(x=>`<span class="nx-tag grey">${esc(x)}</span>`).join('')}</div>
+    <div class="nx-row"><b>${n}/${l.cap}</b><span class="tm-dots">${Array.from({length:l.cap},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</span><span class="nx-sp"></span>${l.id==='mine'?'':`<button class="tm-join ${j?'done':''}" data-act="tmJoin" data-id="${l.id}">${j?ic('check')+'Joined':'Join'}</button>`}</div></div>`;
+}
+function dMatch(v){
+  const list = lobbies(), f = TMF || TMF0(), loc = S.loc !== false;
+  v.innerHTML = TOP() + `<div class="nx-tabs" style="margin-top:10px"><button data-go="d/discover">Discover</button><button class="on">Trace Match</button></div>
+  <div class="nx-card nx-row"><span class="nx-ico">${ic('pin')}</span><div class="nx-sp"><div style="font-weight:700">Location ${loc?'on':'off'}</div><div class="nx-muted">${loc?`Sessions within ${f.km==='Any'?'any distance':f.km} of Toa Payoh`:'Showing lobbies anywhere in Singapore'}</div></div><button class="nx-tog ${loc?'on':''}" role="switch" aria-checked="${loc}" aria-label="Use my location" data-act="tmLoc"><i></i></button></div>
+  <div class="nx-row" style="gap:8px;margin-top:12px"><label class="nx-search">${ic('search')}<input placeholder="Search 120+ activities" aria-label="Search activities"></label><button class="nx-filt" data-act="tmFilters">Filters <span>${f.act.length}</span></button></div>
+  <div class="nx-chips" style="margin-top:12px">${['All','Sports','Arts','Music','Outdoors'].map(c=>`<button class="nx-pill sm ${TMCAT===c?'on':''}" data-act="tmCat" data-c="${c}">${c}</button>`).join('')}</div>
+  <div class="nx-row" style="justify-content:space-between;margin:4px 0 10px"><span class="nx-label" style="margin:0">Open lobbies near you</span><b style="color:#347241;font-size:14px">${list.length} open now</b></div>
+  ${list.length ? list.map(lobbyCard).join('<div class="nx-gap"></div>') : `<div class="nx-card" style="text-align:center"><b>No open lobbies${TMCAT==='All'?'':' in '+TMCAT} right now</b><div class="nx-muted">Change your filters, or host one yourself.</div></div>`}
+  <div style="margin-top:14px"><button class="nx-btn" data-act="host">${ic('users')}Host a session</button></div></div>`;
+}
+function tmFilterSheet(d){
+  d = d || JSON.parse(JSON.stringify(TMF || TMF0()));
+  const chip = (g, x, on) => `<button class="nx-pill sm ${on?'on':''}" data-g="${g}" data-x="${x}">${x}</button>`;
+  const el = sheet(`<div class="nx-row" style="justify-content:space-between"><h3 style="margin:0">Filters</h3><button class="nx-link" data-clear>Clear all</button></div>
+    ${Object.entries(TMGROUPS).map(([g,xs])=>`<div class="nx-label" style="margin:14px 0 8px">${g}</div><div class="nx-opts">${xs.map(x=>chip('act',x,d.act.includes(x))).join('')}</div>`).join('')}
+    ${[['Distance','km',['1 km','3 km','5 km','Any']],['When','when',['Today','This week','Weekend']],['Level','lvl',['Beginner','All','Advanced']]].map(([l,k,xs])=>`<div class="nx-label" style="margin:14px 0 8px">${l}</div><div class="nx-opts">${xs.map(x=>chip(k,x,d[k]===x)).join('')}</div>`).join('')}
+    <div class="nx-btns" style="margin-top:18px"><button class="nx-btn ghost" data-clear>Clear</button><button class="nx-btn" data-apply>Show ${lobbies(d).length} lobb${lobbies(d).length===1?'y':'ies'}</button></div>`);
+  el.addEventListener('click', e=>{
+    const c = e.target.closest('[data-g]');
+    if (c){ const g = c.dataset.g, x = c.dataset.x; if (g==='act') d.act = d.act.includes(x) ? d.act.filter(y=>y!==x) : [...d.act, x]; else d[g] = x; tmFilterSheet(d); return; }
+    if (e.target.closest('[data-clear]')){ tmFilterSheet({ act:[], km:'Any', when:'This week', lvl:'All' }); return; }
+    if (e.target.closest('[data-apply]')){ TMF = d; closeSheet(); refresh(); }
+  });
+}
+function hostSheet(){
+  const el = sheet(`<h3>Host a session</h3><div class="nx-muted" style="font-size:15px">Trace fills in your free slot. You can change anything before you open the lobby.</div>
+    <div style="margin-top:12px">${[['ball','Activity','Basketball pickup'],['clock','When','Fri 25 Sep, 6:30 to 8:00pm, free in your calendar'],['pin','Where','Blk 412 Court, Toa Payoh'],['users','Players','Up to 8, all levels']].map(([i,l,s],k)=>`<div class="nx-radio ${k===0?'on':''}" style="cursor:default"><span class="nx-ico">${ic(i)}</span><div class="nx-sp"><div class="t">${l}</div><div class="s">${s}</div></div></div>`).join('')}</div>
+    <div class="nx-btns" style="margin-top:16px"><button class="nx-btn ghost" data-close>Cancel</button><button class="nx-btn" data-open>Open lobby</button></div>`);
+  $('[data-open]', el).addEventListener('click', ()=>{ S.hosted = true; save(); closeSheet(); TMCAT = 'All'; refresh(); toast('Your lobby is open. Nearby players can join now.', 'users'); });
+}
+
+/* ---------- Discover sheets: filters, change time, Ask Trace ---------- */
+function dFilterSheet(d){
+  d = d || { show:'you', cat:'Digital art', when:'Saturday', km:'3 km' };
+  const chip = (g, x) => `<button class="nx-pill sm ${d[g]===x?'on':''}" data-g="${g}" data-x="${x}">${x}</button>`;
+  const el = sheet(`<div class="nx-row" style="justify-content:space-between"><h3 style="margin:0">Filters</h3><button class="nx-link" data-clear>Clear all</button></div>
+    <div class="nx-label" style="margin:14px 0 8px">Show</div>
+    ${[['you','For you','Based on your interests: Digital art'],['all','All activities','Everything near you, any hobby']].map(([k,tt,s])=>`<button class="nx-radio ${d.show===k?'on':''}" data-g="show" data-x="${k}"><span class="dot"></span><div class="nx-sp"><div class="t">${tt}</div><div class="s">${s}</div></div></button>`).join('')}
+    ${[['Category','cat',['All','Digital art','Drawing','Photography','Pottery','Music','Sports','Outdoors']],['When','when',['Today','Saturday','Sunday','This week']],['Distance','km',['1 km','3 km','5 km','Any']]].map(([l,k,xs])=>`<div class="nx-label" style="margin:14px 0 8px">${l}</div><div class="nx-opts">${xs.map(x=>chip(k,x)).join('')}</div>`).join('')}
+    <div class="nx-btns" style="margin-top:18px"><button class="nx-btn ghost" data-clear>Clear all</button><button class="nx-btn" data-apply>Show ${SESS.length} activities</button></div>`);
+  el.addEventListener('click', e=>{
+    const c = e.target.closest('[data-g]'); if (c){ d[c.dataset.g] = c.dataset.x; dFilterSheet(d); return; }
+    if (e.target.closest('[data-clear]')){ dFilterSheet({ show:'all', cat:'All', when:'Saturday', km:'Any' }); return; }
+    if (e.target.closest('[data-apply]')){ closeSheet(); if (d.show==='all') ACT.allActs(); else toast(`Showing ${d.cat==='All'?'activities':d.cat.toLowerCase()+' sessions'} for you, ${d.when}`, 'spark'); }
+  });
+}
+function changeTimeSheet(sel){
+  sel = sel || 0;
+  const opts = [['Sat 19 Sep, 2:00 to 5:00pm','Recommended. Fits your free time.','green'],['Sat 19 Sep, 5:30 to 8:30pm','Clashes with CS2040 tutorial at 5:00pm','amber'],['Sun 20 Sep, 11:00am to 2:00pm','Free in your calendar',''],['Sat 26 Sep, 2:00 to 5:00pm','Free in your calendar','']];
+  const el = sheet(`<h3>Change time</h3><div class="nx-muted" style="font-size:15px">Other times for Beginner Digital Art, checked against your Google Calendar.</div>
+    <div style="margin-top:12px">${opts.map(([tt,s,k],i)=>`<button class="nx-radio ${sel===i?'on':''}" data-i="${i}"><span class="dot"></span><div class="nx-sp"><div class="t">${tt}</div><div class="s" style="${k==='green'?'color:#347241;font-weight:600':k==='amber'?'color:#8a5a00;font-weight:600':''}">${s}</div></div></button>`).join('')}</div>
+    <button class="nx-link" style="margin-top:12px" data-avail>${ic('clock')}Edit availability${ic('chev')}</button>
+    <div style="margin-top:14px"><button class="nx-btn" data-use>Use this time</button></div><div style="margin-top:10px"><button class="nx-btn ghost" data-close>Keep suggested time</button></div>`);
+  el.addEventListener('click', e=>{
+    const r = e.target.closest('[data-i]'); if (r){ changeTimeSheet(+r.dataset.i); return; }
+    if (e.target.closest('[data-avail]')){ closeSheet(); go('home/schedule'); return; }
+    if (e.target.closest('[data-use]')){ closeSheet(); toast(sel===1 ? 'Heads up: that time clashes with your CS2040 tutorial' : sel===0 ? 'Keeping Sat 19 Sep, 2:00 to 5:00pm' : `Looking for sessions on ${opts[sel][0]}`, sel===1?'info':'clock'); }
+  });
+}
+function askSheet(sid){
+  const x = SX(sid) || SX('digital'), msgs = [['ai','Ask me anything about this session, or pick a question.']];
+  const ans = { bring:`Just a water bottle. ${x.inc[0][0]}, ${x.inc[0][1].toLowerCase()}.`, dress:'There is no dress code. Wear something comfortable.', contact:`${x.org} replies on Telegram at ${x.tg}, usually within a day.` };
+  const qs = [['bring','What should I bring?'],['dress','Is there a dress code?'],['contact','Contact the organiser']];
+  const draw = () => {
+    const el = sheet(`<div class="nx-row" style="justify-content:space-between"><div><h3 style="margin:0">Ask Trace</h3><div class="nx-muted">About ${esc(x.name)} at ${esc(x.org)}</div></div><span class="nx-tag dark">AI</span></div>
+      <div class="nx-chat" style="max-height:360px;overflow-y:auto">${msgs.map(([w,tt,act])=>w==='me'?`<div class="nx-msg me"><div class="bub">${esc(tt)}</div></div>`:`<div class="nx-msg"><span class="nx-lg sm">${MARK}</span><div><div class="bub" style="background:#f1f4f7;box-shadow:none">${esc(tt)}</div>${act?`<button class="nx-mini" style="margin-top:8px" data-msg>${ic('chat')}Message organiser</button>`:''}</div></div>`).join('')}
+        <div class="nx-opts" style="padding-left:50px">${qs.filter(([k])=>!msgs.some(m=>m[3]===k)).map(([k,q])=>`<button class="nx-pill sm" data-q="${k}">${q}</button>`).join('')}</div></div>
+      <form class="nx-row" style="gap:8px;margin-top:12px" data-form><label class="nx-search" style="background:#f1f4f7;box-shadow:none"><input placeholder="Ask a question" aria-label="Ask a question"></label><button class="nx-send" aria-label="Send">${ic('send')}</button></form>`);
+    const chat = $('.nx-chat', el); chat.scrollTop = chat.scrollHeight;
+    el.addEventListener('click', e=>{
+      const q = e.target.closest('[data-q]'); if (q){ const k = q.dataset.q; msgs.push(['me', qs.find(z=>z[0]===k)[1], 0, k], ['ai', ans[k], k==='contact']); draw(); return; }
+      if (e.target.closest('[data-msg]')) ACT.msgOrg({ dataset:{ s:x.id } });
+    });
+    $('[data-form]', el).addEventListener('submit', e=>{ e.preventDefault(); const i = $('input', el), q = i.value.trim(); if (!q) return;
+      msgs.push(['me', q], ['ai', `I don't have that answer yet, so I've passed your question to ${x.org}. They usually reply within a day.`]); draw(); });
+  };
+  draw();
+}
+
+/* ---------- Network: platforms and groups ---------- */
+const netTabs = on => `<div class="nx-utabs">${[['n/feed','Feed'],['n/platforms','Platforms'],['n/groups','Groups']].map(([r,n])=>`<button class="${on===r?'on':''}" ${on===r?'aria-current="page"':`data-go="${r}"`}>${n}</button>`).join('')}</div>`;
+function nPlatforms(v){
+  const sh = Object.assign({ ig:false, pin:false, preview:true, confirm:true }, S.share||{});
+  const rows = [['ig','Share to Instagram by default','On, every share includes Instagram','Off, you pick each time'],['pin','Share to Pinterest by default','On, every share includes Pinterest','Off, you pick each time'],['preview','Show a preview first','See the post before it goes out','Posts go out without a preview'],['confirm','Confirm each destination','Trace asks before each share','Trace shares to your defaults']];
+  v.innerHTML = TOP() + netTabs('n/platforms') + `
+  <div class="nx-label">Linked platforms</div><div class="nx-list">${accounts('Runs and rides become logged sessions').map(acRow).join('')}</div>
+  <div class="nx-label">Sharing settings</div><div class="nx-list">${rows.map(([k,tt,on,off])=>`<div class="nx-li"><div class="nx-sp"><div class="t">${tt}</div><div class="s">${sh[k]?on:off}</div></div><button class="nx-tog ${sh[k]?'on':''}" role="switch" aria-checked="${sh[k]}" aria-label="${tt}" data-act="shareTog" data-k="${k}"><i></i></button></div>`).join('')}</div>
+  <div class="nx-label">Your Pinterest boards</div><div class="nx-list">${[['b_digitalart','Digital Art inspiration','24 pins, public'],['b_lifedrawing','Life drawing studies','12 pins, private']].map(([i,tt,s])=>`<div class="nx-li">${lg(LOGO(i))}<div class="nx-sp"><div class="t">${tt}</div><div class="s">${s}</div></div></div>`).join('')}</div></div>`;
+}
+const GROUPS = [
+  { id:'dac', n:'Digital Art Circle', s:'Art', m:86, img:'g_digitalart', cat:'Art', mine:true },
+  { id:'ws', n:'Weekend Sketchers', s:'Art', m:52, img:'g_sketchers', cat:'Art', mine:true },
+  { id:'cc', n:'Code and Coffee SG', s:'Tech, Bugis', m:164, img:'g_codecoffee', cat:'Tech' },
+  { id:'im', n:'Indie Music Collective', s:'Music, online', m:210, img:'g_indie', cat:'Music' },
+  { id:'wf', n:'Weekend Futsal Crew', s:'Sports, Bishan', m:76, img:'g_futsal', cat:'Sports' } ];
+let GRCAT = 'All';
+function nGroups(v){
+  const fol = S.follow||{}, row = g => { const on = g.mine || fol[g.id];
+    return `<div class="nx-li">${lg(LOGO(g.img))}<div class="nx-sp"><div class="t">${g.n}</div><div class="s">${g.s}, ${g.m + (fol[g.id]?1:0)} members</div></div>${g.mine?`<span class="nx-tag green">${ic('check')}Joined</span>`:`<button class="nx-mini ${on?'done':''}" data-act="follow" data-id="${g.id}">${on?ic('check')+'Following':'Follow'}</button>`}</div>`; };
+  const disc = GROUPS.filter(g=>!g.mine && (GRCAT==='All' || g.cat===GRCAT));
+  v.innerHTML = TOP() + netTabs('n/groups') + `
+  <div class="nx-label">Your groups</div><div class="nx-list">${GROUPS.filter(g=>g.mine).map(row).join('')}</div>
+  <div class="nx-alert blue" style="margin-top:14px">${ic('info')}<span>Groups you join feed sessions into Trace Match. Your profile is visible to groups you follow.</span></div>
+  <div class="nx-label">Discover groups</div>
+  <div class="nx-chips">${['All','Art','Music','Tech','Sports'].map(c=>`<button class="nx-pill sm ${GRCAT===c?'on':''}" data-act="grCat" data-c="${c}">${c}</button>`).join('')}</div>
+  ${disc.length ? `<div class="nx-list">${disc.map(row).join('')}</div>` : `<div class="nx-card" style="text-align:center"><b>You're already in the ${GRCAT.toLowerCase()} groups near you</b><div class="nx-muted">Try another category.</div></div>`}</div>`;
+}
+
+Object.assign(ACT, {
+  schv(el){ SCHV = el.dataset.v; refresh(); },
+  singpass(){ S.sp = true; save(); refresh(); toast('Singpass linked. Your CCA records are syncing.', 'check'); },
+  connect(el){ S.conn = Object.assign({}, S.conn, { [el.dataset.k]: true }); save(); refresh(); toast('Strava connected. Runs and rides now count as sessions.', 'check'); },
+  notif(){ toast('Trace sends one session suggestion at a time', 'clock'); },
+  signOut(){ toast('This is a demo account, so you stay signed in', 'info'); },
+  claim(el){ const r = REWARDS.find(x=>x.id===el.dataset.id); if (!r || credits() < r.cost) return; S.claimed = Object.assign({}, S.claimed, { [r.id]: TODAY }); save(); refresh(); toast(`${r.n} claimed. ${r.cost} TC used.`, 'gift'); },
+  tmCat(el){ TMCAT = el.dataset.c; refresh(); },
+  tmLoc(){ S.loc = S.loc === false; save(); refresh(); },
+  tmFilters(){ tmFilterSheet(); },
+  tmJoin(el){ const id = el.dataset.id, l = LOBBY.find(x=>x.id===id); S.joined = Object.assign({}, S.joined); if (S.joined[id]) { delete S.joined[id]; toast(`You left ${l.n}`, 'refresh'); } else { S.joined[id] = true; toast(`You joined ${l.n}. The host has been told.`, 'users'); } save(); refresh(); },
+  host(){ hostSheet(); },
+  shareTog(el){ const k = el.dataset.k, sh = Object.assign({ ig:false, pin:false, preview:true, confirm:true }, S.share); sh[k] = !sh[k]; S.share = sh; save(); refresh(); },
+  grCat(el){ GRCAT = el.dataset.c; refresh(); },
+  follow(el){ const id = el.dataset.id, g = GROUPS.find(x=>x.id===id); S.follow = Object.assign({}, S.follow); if (S.follow[id]) delete S.follow[id]; else { S.follow[id] = true; toast(`Following ${g.n}. Their sessions will show in Trace Match.`, 'users'); } save(); refresh(); },
+  filters(){ dFilterSheet(); }, changeTime(){ changeTimeSheet(); }, askTrace(el){ askSheet(el && el.dataset.s); }
+});
+const XR = { 'home':[hHome,'Home','h'], 'home/me':[hMe,'Trace Me','h'], 'home/rewards':[hRewards,'Rewards','h'], 'home/schedule':[hSchedule,'Schedule','h'],
+  'd/match':[dMatch,'Trace Match','d'], 'n/platforms':[nPlatforms,'Platforms','w'], 'n/groups':[nGroups,'Groups','w'] };
+
+
 /* ================= ROUTES ================= */
-const ALIAS = { '3071:1079':'d/discover', '3071:1081':'s/digital', '3071:1087':'s/digital/review', '3071:1089':'s/digital/credits', '3071:1083':'s/wheel', '3071:1114':'n/feed', '3071:1121':'p/hobbies', '3071:1123':'p/skills', '3071:1125':'p/vault', '3071:1127':'p/tailor', '3071:1129':'p/portfolio',
+const ALIAS = { '3071:1070':'home', '3071:1072':'home/me', '3071:1074':'home/rewards', '3071:1076':'home/schedule', '3071:1085':'d/match', '3071:1116':'n/platforms', '3071:1118':'n/groups', '3071:1079':'d/discover', '3071:1081':'s/digital', '3071:1087':'s/digital/review', '3071:1089':'s/digital/credits', '3071:1083':'s/wheel', '3071:1114':'n/feed', '3071:1121':'p/hobbies', '3071:1123':'p/skills', '3071:1125':'p/vault', '3071:1127':'p/tailor', '3071:1129':'p/portfolio',
   '3071:1137':'h/art', '3071:1138':'h/art/skills', '3071:1140':'h/art/vault', '3091:1925':'h/art/share', '3096:2010':'h/art/upload',
   '3071:1160':'h/piano', '3071:1162':'h/piano/skills', '3071:1164':'h/piano/vault', '3091:1961':'h/piano/share',
   '3071:1167':'h/bball', '3071:1169':'h/bball/skills', '3071:1171':'h/bball/vault', '3091:1997':'h/bball/share' };
-const LIST = [['d/discover','Discover (app)'],['s/digital','Session: Beginner Digital Art (app)'],['n/feed','Network: Feed (app)'],['p/hobbies','Progress: Hobbies (app)'],['p/skills','Progress: Trace Skills (app)'],['p/vault','Progress: Trace Vault (app)'],['p/tailor','Trace Tailor (app)'],['p/portfolio','Portfolio (app)'],['p/transcript','Skills Transcript (app)'],
+const LIST = [['home','Home (app)'],['home/me','Trace Me (app)'],['home/rewards','Rewards (app)'],['home/schedule','Schedule (app)'],['d/match','Trace Match (app)'],['n/platforms','Network: Platforms (app)'],['n/groups','Network: Groups (app)'],['d/discover','Discover (app)'],['s/digital','Session: Beginner Digital Art (app)'],['n/feed','Network: Feed (app)'],['p/hobbies','Progress: Hobbies (app)'],['p/skills','Progress: Trace Skills (app)'],['p/vault','Progress: Trace Vault (app)'],['p/tailor','Trace Tailor (app)'],['p/portfolio','Portfolio (app)'],['p/transcript','Skills Transcript (app)'],
   ['h/art','Digital Art (app)'],['h/art/skills','Digital Art: Skills (app)'],['h/art/vault','Digital Art: Vault (app)'],['h/art/share','Digital Art: Review and share (app)'],['h/art/upload','Digital Art: Upload artwork (app)'],
   ['h/piano','Piano (app)'],['h/piano/vault','Piano: Vault (app)'],['h/bball','Basketball (app)'],['h/bball/vault','Basketball: Vault (app)']];
 function resolve(id){
   if (!id) return null; id = String(id);
   if (ALIAS[id]) return ALIAS[id];
-  if (/^p\/(hobbies|skills|vault|tailor|portfolio|transcript)$/.test(id)) return id;
+  if (XR[id] || /^p\/(hobbies|skills|vault|tailor|portfolio|transcript)$/.test(id)) return id;
   const m = id.match(/^h\/(\w+)(?:\/(skills|vault|share|upload))?$/); if (m && S.hobbies[m[1]] && !S.hobbies[m[1]].isNew && !S.hobbies[m[1]].sugg) return id;
   if (/^n\/post\/\w+$/.test(id) || id==='n/feed' || id==='d/discover') return id;
   const sm = id.match(/^s\/(\w+)(?:\/(review|credits))?$/); if (sm && SX(sm[1])) return id;
@@ -1418,7 +1665,9 @@ function render(id, view){
   const lv = LAST && LAST.match(/^h\/(\w+)\/vault$/); if (lv && LAST!==id && U[lv[1]] && U[lv[1]].done) U[lv[1]] = null; LAST = id;
   bind(view); AFTER.length = 0;
   let m, title = 'Progress', nav = 'p';
-  if (id==='p/hobbies') pHobbies(view);
+  const X = XR[id];
+  if (X){ X[0](view); title = X[1]; nav = X[2]; }
+  else if (id==='p/hobbies') pHobbies(view);
   else if (id==='p/skills'){ pSkills(view); title='Trace Skills'; }
   else if (id==='p/vault'){ pVault(view); title='Trace Vault'; }
   else if (id==='p/tailor'){ pTailor(view); title='Trace Tailor'; }
@@ -1438,7 +1687,7 @@ function render(id, view){
   requestAnimationFrame(()=>{ AFTER.splice(0).forEach(fn=>fn()); });
   return { nav, title };
 }
-function reset(){ try{ localStorage.removeItem(KEY); }catch(e){} S = fresh(); Object.keys(U).forEach(k=>U[k]=null); Object.keys(SHARE).forEach(k=>SHARE[k]=null); DRAFT=null; RPREV=null; HOMESEEN=null; VFILTER='all'; VEXP=false; SHOWALL=false; closeSheet(); }
+function reset(){ try{ localStorage.removeItem(KEY); }catch(e){} S = fresh(); Object.keys(U).forEach(k=>U[k]=null); Object.keys(SHARE).forEach(k=>SHARE[k]=null); DRAFT=null; RPREV=null; HOMESEEN=null; VFILTER='all'; VEXP=false; SHOWALL=false; SCHV='day'; TMCAT='All'; TMF=null; GRCAT='All'; closeSheet(); }
 
 
 /* ================= HOME: live, animated XP card over the screen image ================= */
@@ -1452,25 +1701,28 @@ function decorate(id, view, anim){
     const pc = set==='home' ? [['c1',59,15,50,0],['c2',151,59,35,-6],['c3',216,24,64,-11]].map(([k,x,y,w,dl])=>`<img class="nx-pcloud ${k}" src="tiles/home-cloud-${k}.png" alt="" style="left:${x}px;top:${y}px;width:${w}px;animation-delay:${dl}s">`).join('') : '';
     d.innerHTML = '<span class="nx-cloud c1" style="top:24px"></span><span class="nx-cloud c3"></span>' + pc + tilesHTML(set) + sparkles(set==='home' ? [[180,18,0],[262,40,1.2],[140,96,2],[384,140,.6]] : [[180,12,0],[300,30,1.2],[214,58,2]]); view.appendChild(d); }
   if (id !== '3071:1070') return;
+  view.appendChild(homeXPCard());
+}
+function homeXPCard(flow){
   const total = 2480 + Math.round(S.gained||0);
   let i = 0; HOMELV.forEach((l,j)=>{ if (total >= l.at) i = j; });
   const cur = HOMELV[i], next = HOMELV[i+1];
   const pct = next ? (total-cur.at)/(next.at-cur.at) : 1;
-  const credits = 820 + Math.round((S.gained||0)/4);
+  const cr = credits();
   const from = HOMESEEN == null ? Math.round(total*0.7) : HOMESEEN;
   const fromPct = HOMESEEN == null ? 0 : Math.max(0, Math.min(1, (HOMESEEN-cur.at)/(next?next.at-cur.at:1)));
   const card = document.createElement('div');
-  card.className = 'nx-homexp';
-  card.innerHTML = `<div class="nx-row" style="justify-content:space-between"><span class="kick">LEVEL ${cur.n}: ${cur.t.toUpperCase()}</span><span class="cred">${ic('award','',2)}<b>${fmt(credits)}</b> credits</span></div>
+  card.className = 'nx-homexp' + (flow ? ' flow' : '');
+  card.innerHTML = `<div class="nx-row" style="justify-content:space-between"><span class="kick">LEVEL ${cur.n}: ${cur.t.toUpperCase()}</span><span class="cred">${ic('award','',2)}<b>${fmt(cr)}</b> credits</span></div>
     <div class="nx-xp" style="font-size:30px;margin-top:2px"><b id="hxp">${fmt(from)}</b> XP</div>
     <div class="nx-wave slow" style="margin-top:16px"><i id="hFill" style="width:${(fromPct*100).toFixed(1)}%"></i><em id="hKnob" style="left:${Math.max(4,fromPct*100).toFixed(1)}%">${ic('sprout')}</em><span class="flag">${ic('flag','',2.2)}</span></div>
     <div class="nx-row" style="justify-content:space-between;margin-top:12px;font-size:13.5px"><span>Lv ${cur.n}</span><b style="color:#347241;font-weight:600">${next ? fmt(next.at-total)+' XP to Lv '+next.n : 'Top level'}</b></div>`;
   card.addEventListener('click', e=>{ e.stopPropagation(); t().go('p/hobbies'); });
-  view.appendChild(card);
   HOMESEEN = total;
   setTimeout(()=>{ countUp(card.querySelector('#hxp'), from, total, 2200);
     const f = card.querySelector('#hFill'), k = card.querySelector('#hKnob');
     f.style.width = (pct*100).toFixed(1)+'%'; k.style.left = Math.max(4,pct*100).toFixed(1)+'%'; }, 350);
+  return card;
 }
 
 /* containers for sheets and toasts, inside the phone frame */
@@ -1480,6 +1732,6 @@ function mount(){
   if (!$('#ntoast')){ const tt = document.createElement('div'); tt.id = 'ntoast'; tt.setAttribute('role','status'); tt.setAttribute('aria-live','polite'); screen.appendChild(tt); }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
-if (typeof TABS !== 'undefined'){ TABS.p = 'p/hobbies'; TABS.w = 'n/feed'; TABS.d = 'd/discover'; }
+if (typeof TABS !== 'undefined'){ TABS.h = 'home'; TABS.p = 'p/hobbies'; TABS.w = 'n/feed'; TABS.d = 'd/discover'; }
 window.NATIVE = { resolve, render, reset, decorate, list: LIST, get state(){ return S; } };
 })();
