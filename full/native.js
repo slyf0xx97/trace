@@ -286,7 +286,7 @@ function headDeco(h){
 /* ---------------- shared blocks ---------------- */
 const SEG = cur => `<div class="nx-seg" role="tablist">${[['p/hobbies','Hobbies'],['p/skills','Trace Skills'],['p/vault','Trace Vault']]
   .map(([r,l])=>`<button class="nx-pill ${cur===r?'on':''}" role="tab" aria-selected="${cur===r}" data-go="${r}" data-replace="1">${l}</button>`).join('')}</div>`;
-const TOP = () => `<div class="nx-sky"></div>${skyDeco()}<div class="nx-wrap"><div class="nx-top"></div><div class="nx-hrow"><span class="nx-logo">${MARK}<span>trace</span></span></div>`;
+const TOP = () => `<div class="nx-sky"></div>${skyDeco()}<div class="nx-wrap"><div class="nx-top"></div><div class="nx-hrow"><button class="nx-logo" data-act="logoHome" aria-label="Trace, go to Home">${MARK}<span>trace</span></button></div>`;
 const BACKROW = (label, to, where) => `<div class="nx-sky"></div>${skyDeco()}<div class="nx-wrap"><div class="nx-top"></div><div class="nx-hrow"><button class="nx-back" data-act="back" data-to="${to||''}">${BACK}${esc(label)}</button>${where?`<span class="nx-where">${esc(where)}</span>`:''}</div>`;
 const AFTER = [];   // run after the view is in the page (animations)
 let ANIM = null;    // { k, from } for the XP count-up
@@ -1625,6 +1625,7 @@ function nGroups(v){
 }
 
 Object.assign(ACT, {
+  logoHome(){ if (t().state.cur !== 'home') go('home'); },
   schv(el){ SCHV = el.dataset.v; refresh(); },
   singpass(){ S.sp = true; save(); refresh(); toast('Singpass linked. Your CCA records are syncing.', 'check'); },
   connect(el){ const k = el.dataset.k, on = !conn(k); S.conn = Object.assign({}, CONN0, S.conn, { [k]: on }); save(); refresh();
