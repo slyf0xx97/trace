@@ -1406,8 +1406,11 @@ function credits(){ const spent = Object.keys(S.claimed||{}).reduce((a,k)=>a+((R
 function cpBalance(){ return 100 - Object.entries(S.bookings||{}).filter(([,b])=>b.cp).reduce((a,[id])=>a+(SX(id)?SX(id).price:0),0); }
 function satBooking(){ const id = Object.keys(S.bookings||{}).find(SX); return id ? SX(id) : null; }
 const lg = x => `<span class="nx-lg">${x}</span>`;
-const acRow = ([logo,n,s,on,key]) => `<div class="nx-li">${lg(logo)}<div class="nx-sp"><div class="t">${n}</div><div class="s">${s}</div></div>${on?`<span class="nx-tag green">${ic('check')}Connected</span>`:`<button class="nx-mini" data-act="connect" data-k="${key}">Connect</button>`}</div>`;
-const accounts = sub => { const st = !!(S.conn||{}).strava; return [[IG,'Instagram','18 posts, 2019 to 2026',true],[PIN,'Pinterest','31 pieces across 2 boards',true],[LOGO('l_linkedin'),'LinkedIn','Skills and endorsements synced',true],[LOGO('l_strava'),'Strava',st?'Runs and rides are logged as sessions':sub,st,'strava']]; };
+const acRow = ([logo,n,s,on,key]) => `<div class="nx-li">${lg(logo)}<div class="nx-sp"><div class="t">${n}</div><div class="s">${s}</div></div>${on?`<button class="nx-tag green" data-act="connect" data-k="${key}" aria-label="Disconnect ${n}">${ic('check')}Connected</button>`:`<button class="nx-mini" data-act="connect" data-k="${key}">Connect</button>`}</div>`;
+const CONN0 = { ig:true, pin:true, li:true, strava:false }, ACN = { ig:'Instagram', pin:'Pinterest', li:'LinkedIn', strava:'Strava' };
+const conn = k => Object.assign({}, CONN0, S.conn)[k];
+const accounts = sub => [[IG,'ig','18 posts, 2019 to 2026'],[PIN,'pin','31 pieces across 2 boards'],[LOGO('l_linkedin'),'li','Skills and endorsements synced'],[LOGO('l_strava'),'strava','Runs and rides are logged as sessions',sub]]
+  .map(([l,k,s,off]) => [l, ACN[k], conn(k) ? s : (off || 'Not connected'), conn(k), k]);
 
 function hHome(v){
   const b = satBooking();
@@ -1624,7 +1627,8 @@ function nGroups(v){
 Object.assign(ACT, {
   schv(el){ SCHV = el.dataset.v; refresh(); },
   singpass(){ S.sp = true; save(); refresh(); toast('Singpass linked. Your CCA records are syncing.', 'check'); },
-  connect(el){ S.conn = Object.assign({}, S.conn, { [el.dataset.k]: true }); save(); refresh(); toast('Strava connected. Runs and rides now count as sessions.', 'check'); },
+  connect(el){ const k = el.dataset.k, on = !conn(k); S.conn = Object.assign({}, CONN0, S.conn, { [k]: on }); save(); refresh();
+    toast(on ? (k==='strava' ? 'Strava connected. Runs and rides now count as sessions.' : `${ACN[k]} connected`) : `${ACN[k]} disconnected. Trace won't share to it or sync from it.`, on ? 'check' : 'link'); },
   notif(){ toast('Trace sends one session suggestion at a time', 'clock'); },
   claim(el){ const r = REWARDS.find(x=>x.id===el.dataset.id); if (!r || credits() < r.cost) return; S.claimed = Object.assign({}, S.claimed, { [r.id]: TODAY }); save(); refresh(); toast(`${r.n} claimed. ${r.cost} TC used.`, 'gift'); },
   tmCat(el){ TMCAT = el.dataset.c; refresh(); },
